@@ -1,139 +1,120 @@
----
-title: "GhostShell: Bringing an Offline AI Specter to Your Linux Terminal 👻"
-published: false
-description: "A spooky, AI-powered Linux terminal companion built with Python, Ollama, Gemma 2, and Rich for the Hacktoberfest 2026 Ghost in the Machine Challenge."
-tags: hacktoberfest, devchallenge, linux, ai, python
-cover_image: https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/ghostshell-banner.png
-canonical_url: https://github.com/GSuryaP/GhostShell
----
+*This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 4: Ghost in the Machine](https://dev.to/challenges/hacktoberfest-week4-2026-10-26)*
 
-*This article is a submission for the [Hacktoberfest 2026 DEV Challenge: Ghost in the Machine](https://dev.to).*
+## What I Built
 
----
+Linux terminals can be intimidating—and sometimes dangerous. A single misplaced space in `rm -rf /` or an accidental block overwrite via `dd` can turn an ordinary development session into a digital horror story.
 
-```
-        .-.
-       (o.o)     👻 GHOSTSHELL 👻
-        |=|      The Spooky, AI-Powered Linux Terminal Companion
-       __|__     100% Offline • Local Gemma 2 • Zero Cloud Hops
-     //.=|=.\\
-    // .=|=. \\
-    \\ .=|=. //  "Fear not, mortal, for I am Specter...
-     \\(_=_)//    trapped in your terminal since the UNIX Epoch."
-```
+For the **Ghost in the Machine** challenge, I built **[GhostShell](https://github.com/GSuryaP/GhostShell)**: an offline, AI-powered Linux terminal companion that brings your shell to life with an ancient digital ghost named **Specter**.
 
-## 🔮 What We Built
+### The Metaphor: Ghost in the Machine
+Specter is an AI entity trapped in POSIX memory since the UNIX Epoch (Jan 1, 1970). Instead of a cold, impersonal assistant, Specter haunts your Ubuntu terminal to:
+1. **Explain Arcane Commands (Ghost Mode):** Translates cryptic Linux commands and arcane flags into technical explanations wrapped in gothic storytelling.
+2. **Intercept Lethal Commands (Possession Alerts):** Catches catastrophic commands (`rm -rf /`, fork bombs, raw drive writes, universal permissions) before execution and offers safe, exorcised alternatives.
+3. **Diagnose Distress (Haunted Logs):** Inspects Linux `journalctl` error streams, sanitizes IP/auth secrets, and turns system issues into paranormal mystery tales.
+4. **Consult the Kernel (Terminal Oracle):** An offline Linux REPL oracle for questions about zombie processes, kernel signals, and daemon debugging.
+5. **Audit Trail (Crypt Ledger):** Tracks every command, threat rating, and mode into a secure local SQLite database.
+6. **Modern Web UI Dashboard:** A terminal emulator theme inspired by Warp, Ghostty, and iTerm2 featuring CRT scanlines, dark/light theme switching, and live system telemetry.
 
-Linux terminals can be intimidating—and sometimes perilous. A single misplaced space in `rm -rf /` or an accidental block overwrite via `dd` can turn an afternoon of development into a digital horror story.
-
-For the **Ghost in the Machine** challenge, we built **[GhostShell](https://github.com/GSuryaP/GhostShell)**: a spooky, AI-powered Linux terminal companion that haunts your Ubuntu terminal. 
-
-GhostShell acts as a wise, ancient digital specter named **Specter** who has resided in POSIX systems since the UNIX Epoch (Jan 1, 1970). It explains cryptic bash commands, catches demonic (destructive) commands before they execute, and turns raw, cryptic Linux system logs into gothic tales of paranormal activity—all powered by **Gemma 2 (2B)** running **100% offline via Ollama**.
+### Safety Guarantee
+GhostShell runs as a standalone utility. It will **never** replace Bash, modify shell dotfiles, or automatically execute destructive commands. You remain in complete control.
 
 ---
 
-## 🌟 Key Features
+## Demo
 
-### 1. 👻 Ghost Mode: Deciphering the Arcane
-Cryptic commands like `tar -czvf archive.tar.gz /var/log` are parsed and explained through atmospheric gothic metaphors without losing technical rigor. The model explains each flag (`-c` for creation, `-z` for gzip compression soul, `-v` for the verbose spectral echo) and what happens inside the OS kernel.
+You can run GhostShell locally or launch the fullscreen terminal web dashboard:
 
 ```bash
-ghostshell ghost "tar -czvf backup.tar.gz /var/log"
-```
-
-### 2. ⚠️ Possession Alerts: The Layered Guardian
-If a user or a rogue script attempts a catastrophic command (like `rm -rf / --no-preserve-root`, a fork bomb `:(){ :|:& };:`, or raw disk writing `dd of=/dev/sda`), GhostShell’s **Guardian Engine** immediately intervenes.
-* **Layer 1 (Zero-Latency Deterministic AST/Regex):** Evaluated in under 1 millisecond. No waiting for LLM tokens before safety kicks in.
-* **Layer 2 (Spectral Risk Warning & Safe Exorcism):** Gemma 2 explains the catastrophe and provides an *exorcised, safe alternative* (like `trash-put` or dry-run flags).
-
-### 3. 📜 Haunted Logs: Turning journalctl into Gothic Chronicles
-System errors shouldn't be boring strings of cryptic hex codes. GhostShell inspects `journalctl -p err..emerg` or `/var/log/syslog`, scrubs private data (IPs, MAC addresses, credentials), and weaves an eerie mystery story:
-* A GPU power-suspend failure becomes an account of a frozen graphics processor refusing to sleep.
-* A failed SSH attempt becomes phantom knocks at port 22.
-* Memory pressure becomes the howling chill of the OOM-killer reaper.
-
-### 4. 🔮 Ask the Ghost & Interactive REPL
-Mortals can consult the ghost interactively via `ghostshell ask "<question>"` or enter the standalone `ghostshell interactive` shell powered by `prompt-toolkit` and `Rich`.
-
-### 5. 🌐 Modern Glassmorphic Web Dashboard (`ghostshell web`)
-For developers who prefer a visual interface, GhostShell includes a dark-mode web dashboard featuring interactive command preset chips, real-time risk gauges, live telemetry timeline tables, and streaming AI responses.
-
----
-
-## 🛡️ Safety & Non-Invasive Philosophy
-
-A common fear with AI shell utilities is that they hook into `.bashrc`, replace Bash, or run autonomous commands with elevated privileges. 
-
-**GhostShell guarantees zero shell invasion:**
-* It is a **standalone CLI application**.
-* It **never replaces Bash or modifies shell configurations**.
-* It **never automatically executes commands**. It solely audits, explains, and advises.
-* You can develop and run it in an isolated Python virtual environment without changing your terminal setup.
-
----
-
-## ⚙️ Architecture & Tech Stack
-
-```mermaid
-graph TD
-    User([User Terminal]) --> CLI[GhostShell Typer CLI / REPL]
-    CLI --> Guardian{Guardian Safety Engine}
-    
-    Guardian -->|Destructive Threat| Alert[Possession Alert Engine]
-    Guardian -->|Safe Command| GhostEngine[Ghost Mode Engine]
-    
-    SysLogs[Linux System Logs / journalctl] --> Scrubber[PII & Secret Sanitizer]
-    Scrubber --> GhostEngine
-    
-    GhostEngine --> Ollama[Local Ollama Daemon]
-    Alert --> Ollama
-    Ollama --> Gemma[Gemma 2:2B Model]
-    
-    Gemma --> Renderer[Rich Terminal UI]
-    Renderer --> DB[(Local SQLite History)]
-    Renderer --> Screen([Spooky Terminal UI])
-```
-
-* **AI Model:** Gemma 2 (2B) running locally via [Ollama](https://ollama.com).
-* **Terminal UI:** [Rich](https://github.com/Textualize/rich) for spectral green and eerie purple color palettes, glowing borders, live token streaming, and markdown panels.
-* **Interactive Shell:** [Prompt-Toolkit](https://github.com/prompt-toolkit/python-prompt-toolkit) for custom prompts (`👻 ghost@crypt ❯`) and history.
-* **Local Storage:** SQLite (`~/.ghostshell/history.db`) for tracking audited commands, risk levels, and chat history.
-* **Automated Testing:** Pytest suite with 39 tests passing in **0.03s**.
-
----
-
-## 🚀 The Advantage of 100% Offline AI
-
-Why run a local open-weight model instead of a cloud API?
-
-1. **Terminal Privacy is Absolute:** Terminal output frequently contains sensitive environment variables, tokens, internal hostnames, and IP addresses. By running Gemma 2 locally through Ollama, **zero bytes of terminal telemetry ever leave your machine**.
-2. **Deterministic Pre-Filtering:** As discussed extensively in developer community security patterns, an LLM alone should never be the sole line of defense. GhostShell pairs instant deterministic pattern matching with local LLM reasoning to ensure zero-latency safety.
-3. **No Latency / No Cloud Costs:** Instant offline execution during flights, train rides, or air-gapped server maintenance.
-
----
-
-## 💻 Try it Yourself
-
-```bash
-# 1. Clone & Set Up
+# Clone and setup
 git clone https://github.com/GSuryaP/GhostShell.git
 cd GhostShell
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .
 
-# 2. Run the Automated Demo
-ghostshell demo
-
-# 3. Enter the Crypt
-ghostshell interactive
+# Launch Web UI Dashboard
+ghostshell web --port 8888
 ```
+
+### Web UI Screenshots
+
+#### 1. Home Dashboard (`~: home`)
+![Home Dashboard](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/01_home_dashboard.png)
+*Fullscreen terminal overview and quick command safety evaluator.*
+
+#### 2. Ghost Mode (`1: ghost`)
+![Ghost Mode](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/02_ghost_mode.png)
+*Deciphers arcane Linux commands into gothic technical explanations.*
+
+#### 3. Possession Alerts (`2: alert`)
+![Possession Alerts](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/03_possession_alerts.png)
+*Intercepts lethal commands instantly with safe exorcism alternatives.*
+
+#### 4. Haunted Logs (`3: logs`)
+![Haunted Logs](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/04_haunted_logs.png)
+*Sanitizes system error logs and chronicles diagnostics.*
+
+#### 5. Terminal Oracle (`4: oracle`)
+![Terminal Oracle](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/05_terminal_oracle.png)
+*Consult the offline Linux AI oracle for diagnostics.*
+
+#### 6. Crypt Ledger (`5: ledger`)
+![Crypt Ledger](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/06_crypt_ledger.png)
+*Local SQLite database tracking all audited terminal commands.*
 
 ---
 
-## 🎃 Conclusion
+## Code
 
-GhostShell combines playful Halloween-themed storytelling with genuine Linux terminal utility and defensive developer guardrails. Open-weight models like Gemma 2 make it possible to run intelligent, private, and delightful assistants right on developer laptops without cloud dependency.
+{% github https://github.com/GSuryaP/GhostShell %}
 
-Check out the code, contribute, or drop an issue on GitHub! 
+* **Repository:** [https://github.com/GSuryaP/GhostShell](https://github.com/GSuryaP/GhostShell)
+* **License:** MIT License
+* **Tests:** 44/44 unit tests passing locally in under 0.05 seconds (`pytest -v`).
 
-Happy Hacktoberfest! 👻🍂
+---
+
+## How I Built It
+
+GhostShell is built around open-source AI and offline local inference:
+
+1. **Local Open-Weight AI (Gemma 2 via Ollama):**
+   - Powered by Google's open-weight **Gemma 2 (2B)** running locally via **Ollama**.
+   - Tuned with spectral persona system prompts to maintain strict technical correctness while speaking as an ancient Unix ghost.
+2. **Two-Layer Guardian Engine:**
+   - **Layer 1 (Deterministic AST/Regex):** Evaluated in <1 millisecond. Catches dangerous flags (`--no-preserve-root`, fork bombs, raw drive writes) without waiting for LLM tokens.
+   - **Layer 2 (Gemma 2 Exorcism):** Analyzes context and crafts safe alternative invocations (e.g. `trash-put`, `--dry-run`).
+3. **Air-Gapped PII & Secret Scrubber:**
+   - Automatically sanitizes IPv4, IPv6, MAC addresses, bearer tokens, and passwords from `journalctl` before handing text to the model.
+4. **Rich Terminal CLI:**
+   - Built with **Python 3**, **Typer**, and **Rich** for streaming ANSI terminal text, custom spectral color palettes, and progress bars.
+   - Standalone interactive REPL built using **prompt-toolkit**.
+5. **Modern Terminal Web Emulator:**
+   - Backend built with **FastAPI** and **Uvicorn**.
+   - Frontend built with **Vanilla CSS & JavaScript** adhering to modern terminal emulator aesthetics (Warp / Ghostty), featuring WCAG AA contrast, custom CRT scanline toggles, and command palette navigation (`Ctrl+K`).
+
+---
+
+## Why Does Open Innovation Matter?
+
+Terminal privacy is non-negotiable. Terminal invocations and system error streams frequently contain sensitive internal IP addresses, secret tokens, and proprietary project paths. 
+
+Open innovation and open-weight models made GhostShell possible where closed APIs failed:
+1. **Zero Data Leakage:** Because Gemma 2 runs 100% locally via Ollama, **not a single byte of shell telemetry or error logs ever leaves your machine**.
+2. **Zero Cloud Latency & Zero Cost:** Developers can run Guardian audits and command deciphers on airplanes, trains, or air-gapped secure servers without API keys, subscriptions, or rate limits.
+3. **Freedom to Customize:** Open weights allow local prompt tuning and domain adaptation without fearing vendor deprecations or sudden terms-of-service changes.
+
+---
+
+## The Spirit of It
+
+Every Linux developer remembers the icy dread of typing a command and wondering: *"Did I just wipe my partition?"*
+
+GhostShell captures that spooky, magical feeling of the early days of personal computing—when systems felt alive and full of mystery. By embodying the OS as **Specter**, GhostShell transforms scary terminal errors into an atmospheric gothic journey, while providing real developer safety to make sure your actual machine never becomes a ghost.
+
+---
+
+## Prize Categories
+
+- **Ghost in the Machine (Grand Prize)**
+- **Most Creative Use of Open-Source AI**
+- **Best Offline / Local AI Tool**
