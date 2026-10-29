@@ -1,7 +1,6 @@
-# 👻 GhostShell
+# GhostShell
 
-> **A spooky, AI-powered Linux terminal companion built for Hacktoberfest 2026: Ghost in the Machine.**  
-> *Haunt your Ubuntu terminal with local, privacy-first AI that explains commands, exorcises destructive risks, and turns system logs into gothic tales—without taking control of your shell.*
+> Offline AI Linux terminal companion explaining commands and intercepting hazards.
 
 ---
 
@@ -14,7 +13,7 @@
 
 ```
         .-.
-       (o.o)     👻 GHOSTSHELL 👻
+       (o.o)     GHOSTSHELL
         |=|      The Spooky, AI-Powered Linux Terminal Companion
        __|__     Hacktoberfest 2026: Ghost in the Machine
      //.=|=.\\
@@ -25,16 +24,22 @@
 
 ---
 
-## 🌟 What is GhostShell?
+## Description
+
+Offline AI Linux terminal companion explaining commands and intercepting hazards.
+
+---
+
+## What is GhostShell?
 
 **GhostShell** is a local-first, Halloween-themed terminal companion for Ubuntu and Linux environments. It brings your command-line interface to life with an ancient digital ghost named **Specter**, providing both atmospheric entertainment and serious developer safety.
 
-### 🛡️ Safety Guarantee
+### Safety Guarantee
 GhostShell runs as a **standalone utility**. It will **not** replace Bash, will **not** modify your `.bashrc` or shell configuration files, and will **never** automatically execute AI-generated or potentially destructive commands. You remain in complete control of your system at all times.
 
 ---
 
-## 📸 Project Demo Screenshots
+## Project Demo Screenshots
 
 ### 1. Home Dashboard (`~: home`)
 ![Home Dashboard](assets/01_home_dashboard.png)
@@ -62,34 +67,34 @@ GhostShell runs as a **standalone utility**. It will **not** replace Bash, will 
 
 ---
 
-## 🔮 Key Features
+## Key Features
 
-### 1. 👻 Ghost Mode (`ghostshell ghost "<command>"`)
+### 1. Ghost Mode (`ghostshell ghost "<command>"`)
 Translates arcane Linux commands and cryptic flags into clear, technically precise explanations wrapped in gothic, spooky storytelling.
 * *Example:* Explains `tar -czvf backup.tar.gz /var/log` as binding digital souls into compressed phantom tombs.
 
-### 2. ⚠️ Possession Alerts (`ghostshell alert "<command>"`)
+### 2. Possession Alerts (`ghostshell alert "<command>"`)
 A two-layer defense system that guards your terminal from catastrophic mistakes:
 * **Layer 1 (Zero-Latency Deterministic Guardian):** Instantly catches lethal patterns (e.g. `rm -rf /`, `dd of=/dev/sd*`, fork bombs `:(){ :|:& };:`, raw disk writes, `chmod -R 777 /`, blind piping `curl | bash`).
 * **Layer 2 (Spectral Risk Explanation & Exorcism):** Gemma 2 explains *why* the command is lethal and proposes a safe, verified alternative (e.g., `trash-put`, targeted scopes, `--dry-run`).
 
-### 3. 📜 Haunted Logs (`ghostshell logs [--file <path>]`)
+### 3. Haunted Logs (`ghostshell logs [--file <path>]`)
 Inspects system telemetry (`journalctl -p err..emerg`, `/var/log/syslog`, or user-supplied log files) and weaves an eerie mystery tale explaining what troubled your machine.
 * **Built-in PII & Secret Scrubber:** Automatically sanitizes IPv4/IPv6 addresses, MAC addresses, and credentials before handing logs to the AI.
 * **Evidence Table:** Displays exact timestamps, daemons, and raw event evidence alongside the gothic diagnosis.
 
-### 4. 🔮 Ask the Ghost (`ghostshell ask "<question>"`)
+### 4. Ask the Ghost (`ghostshell ask "<question>"`)
 Allows mortals to consult the Specter on Linux kernel concepts, debugging tricky errors, or understanding daemon behavior offline.
 
-### 5. 🐚 Interactive REPL (`ghostshell interactive`)
-A dedicated interactive terminal shell powered by `prompt-toolkit` and `Rich`, featuring custom spectral prompts (`👻 ghost@crypt ❯`), command history, auto-auditing, and status diagnostics.
+### 5. Interactive REPL (`ghostshell interactive`)
+A dedicated interactive terminal shell powered by `prompt-toolkit` and `Rich`, featuring custom spectral prompts (`ghost@crypt ❯`), command history, auto-auditing, and status diagnostics.
 
-### 6. 🌐 Modern Web UI Dashboard (`ghostshell web` or `ghostshell ui`)
+### 6. Modern Web UI Dashboard (`ghostshell web` or `ghostshell ui`)
 A dark-mode glassmorphic browser dashboard with ambient floating particles, interactive command presets, real-time risk gauges, log evidence viewer, and local SQLite audit ledger.
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
@@ -113,7 +118,7 @@ graph TD
 
 ---
 
-## 🚀 Quickstart & Installation
+## Quickstart & Installation
 
 ### Prerequisites
 1. **Python 3.10+** (Tested on Python 3.14 on Ubuntu)
@@ -143,7 +148,7 @@ pip install -e .
 
 ---
 
-## 📖 Usage Guide
+## Usage Guide
 
 ### 1. Spooky Command Explanation (Ghost Mode)
 ```bash
@@ -199,7 +204,7 @@ ghostshell demo
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 GhostShell includes an extensive test suite covering all Guardian detection rules, log sanitization, and SQLite audit records:
 
@@ -207,11 +212,11 @@ GhostShell includes an extensive test suite covering all Guardian detection rule
 pytest -v
 ```
 
-All 39 unit tests run in less than **0.05 seconds** without requiring network access.
+All 44 unit tests run in less than **0.05 seconds** without requiring network access.
 
 ---
 
-## 🔒 Privacy & Offline Guarantee
+## Privacy & Offline Guarantee
 
 * **No Cloud Telemetry:** Inference runs 100% on your local hardware via Ollama.
 * **No Secret Leakage:** System log ingestion automatically masks external IP addresses (`[SPECTRAL-IP]`), MAC addresses (`[SPECTRAL-MAC]`), and passwords/tokens (`[REDACTED-SECRET]`).
@@ -219,8 +224,8 @@ All 39 unit tests run in less than **0.05 seconds** without requiring network ac
 
 ---
 
-## 📜 License
+## License
 
 Distributed under the **MIT License**. See `LICENSE` for details.
 
-Built with 🖤 for **Hacktoberfest 2026: Ghost in the Machine DEV Challenge**.
+Built for **Hacktoberfest 2026: Ghost in the Machine DEV Challenge**.
