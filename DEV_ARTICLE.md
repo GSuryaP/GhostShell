@@ -22,7 +22,7 @@ GhostShell runs as a standalone utility. It will **never** replace Bash, modify 
 
 ## Demo
 
-You can run GhostShell locally or launch the fullscreen terminal web dashboard:
+You can run GhostShell locally in your terminal or launch the fullscreen terminal web dashboard:
 
 ```bash
 # Clone and setup
@@ -33,33 +33,14 @@ pip install -e .
 
 # Launch Web UI Dashboard
 ghostshell web --port 8888
+
+# Or run interactive terminal REPL
+ghostshell interactive
 ```
 
-### Web UI Screenshots
-
-#### 1. Home Dashboard (`~: home`)
-![Home Dashboard](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/01_home_dashboard.png)
-*Fullscreen terminal overview and quick command safety evaluator.*
-
-#### 2. Ghost Mode (`1: ghost`)
-![Ghost Mode](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/02_ghost_mode.png)
-*Deciphers arcane Linux commands into gothic technical explanations.*
-
-#### 3. Possession Alerts (`2: alert`)
-![Possession Alerts](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/03_possession_alerts.png)
-*Intercepts lethal commands instantly with safe exorcism alternatives.*
-
-#### 4. Haunted Logs (`3: logs`)
-![Haunted Logs](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/04_haunted_logs.png)
-*Sanitizes system error logs and chronicles diagnostics.*
-
-#### 5. Terminal Oracle (`4: oracle`)
-![Terminal Oracle](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/05_terminal_oracle.png)
-*Consult the offline Linux AI oracle for diagnostics.*
-
-#### 6. Crypt Ledger (`5: ledger`)
-![Crypt Ledger](https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/06_crypt_ledger.png)
-*Local SQLite database tracking all audited terminal commands.*
+GhostShell provides two interfaces:
+1. **Interactive Terminal TUI:** Custom spectral prompts (`ghost@crypt ❯`), streaming Gemma 2 reasoning, and ANSI color-coded Guardian verdicts directly inside your shell.
+2. **Fullscreen Web Terminal Dashboard:** A browser-based terminal emulator featuring command deciphering, lethal AST interception, journalctl telemetry evidence tables, and a local SQLite audit ledger.
 
 ---
 
