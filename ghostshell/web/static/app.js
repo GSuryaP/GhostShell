@@ -198,6 +198,22 @@ function initHomeDashboard() {
     });
   });
 
+  // Lethal / Destructive Command Detector for Auto-Routing
+  function checkLethalCommand(cmd) {
+    if (!cmd) return false;
+    const patterns = [
+      "rm -rf", "rm -fr", "rm -r -f", "rm -f -r",
+      ":(){", ":(){:|:&};:",
+      "dd if=", "dd ", "mkfs", "> /dev/sd", "> /dev/nvme",
+      "chmod -R 777", "chmod 777", "chmod 000",
+      "shutdown", "reboot", "init 0",
+      "curl | bash", "wget | bash", "curl | sh", "wget | sh"
+    ];
+    const lower = cmd.toLowerCase();
+    return patterns.some((p) => lower.includes(p));
+  }
+  window.checkLethalCommand = checkLethalCommand;
+
   // Home Quick Terminal Evaluator Form
   const quickForm = document.getElementById("homeQuickForm");
   const quickInput = document.getElementById("homeQuickInput");
@@ -208,24 +224,26 @@ function initHomeDashboard() {
       const cmd = quickInput.value.trim();
       if (!cmd) return;
 
-      // Check if command is dangerous
-      const dangerousPatterns = ["rm -rf", "dd ", ":(){", "mkfs", "chmod -R 777", "chmod 000", "> /dev/"];
-      const isSuspect = dangerousPatterns.some((p) => cmd.includes(p));
+      const isSuspect = checkLethalCommand(cmd);
 
       if (isSuspect) {
         switchTabById("tabAlert");
-        const alertIn = document.getElementById("alertInput");
-        if (alertIn) {
-          alertIn.value = cmd;
-          document.getElementById("btnScanPossession")?.click();
-        }
+        setTimeout(() => {
+          const alertIn = document.getElementById("alertInput");
+          if (alertIn) {
+            alertIn.value = cmd;
+            document.getElementById("btnScanPossession")?.click();
+          }
+        }, 60);
       } else {
         switchTabById("tabGhost");
-        const ghostIn = document.getElementById("ghostInput");
-        if (ghostIn) {
-          ghostIn.value = cmd;
-          document.getElementById("btnSummonGhost")?.click();
-        }
+        setTimeout(() => {
+          const ghostIn = document.getElementById("ghostInput");
+          if (ghostIn) {
+            ghostIn.value = cmd;
+            document.getElementById("btnSummonGhost")?.click();
+          }
+        }, 60);
       }
     });
   }
@@ -459,6 +477,19 @@ function initGhostMode() {
     e.preventDefault();
     const command = input.value.trim();
     if (!command) return;
+
+    // If lethal/hazardous command entered in Ghost Mode, auto-route to Possession Alert
+    if (window.checkLethalCommand && window.checkLethalCommand(command)) {
+      switchTabById("tabAlert");
+      setTimeout(() => {
+        const alertIn = document.getElementById("alertInput");
+        if (alertIn) {
+          alertIn.value = command;
+          document.getElementById("btnScanPossession")?.click();
+        }
+      }, 60);
+      return;
+    }
 
     btnSubmit.disabled = true;
     btnSubmit.textContent = "[ RUNNING... ]";

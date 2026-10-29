@@ -34,6 +34,34 @@ GhostShell runs as a **standalone utility**. It will **not** replace Bash, will 
 
 ---
 
+## 📸 Project Demo Screenshots
+
+### 1. Home Dashboard (`~: home`)
+![Home Dashboard](assets/01_home_dashboard.png)
+*Fullscreen terminal overview and quick command safety evaluator.*
+
+### 2. Ghost Mode (`1: ghost`)
+![Ghost Mode](assets/02_ghost_mode.png)
+*Deciphers arcane Linux commands into gothic technical explanations.*
+
+### 3. Possession Alerts (`2: alert`)
+![Possession Alerts](assets/03_possession_alerts.png)
+*Intercepts lethal commands instantly with safe exorcism alternatives.*
+
+### 4. Haunted Logs (`3: logs`)
+![Haunted Logs](assets/04_haunted_logs.png)
+*Sanitizes system error logs and chronicles diagnostics.*
+
+### 5. Terminal Oracle (`4: oracle`)
+![Terminal Oracle](assets/05_terminal_oracle.png)
+*Consult the offline Linux AI oracle for diagnostics.*
+
+### 6. Crypt Ledger (`5: ledger`)
+![Crypt Ledger](assets/06_crypt_ledger.png)
+*Local SQLite database tracking all audited terminal commands.*
+
+---
+
 ## 🔮 Key Features
 
 ### 1. 👻 Ghost Mode (`ghostshell ghost "<command>"`)
