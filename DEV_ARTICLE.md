@@ -55,6 +55,9 @@ System errors shouldn't be boring strings of cryptic hex codes. GhostShell inspe
 ### 4. 🔮 Ask the Ghost & Interactive REPL
 Mortals can consult the ghost interactively via `ghostshell ask "<question>"` or enter the standalone `ghostshell interactive` shell powered by `prompt-toolkit` and `Rich`.
 
+### 5. 🌐 Modern Glassmorphic Web Dashboard (`ghostshell web`)
+For developers who prefer a visual interface, GhostShell includes a dark-mode web dashboard featuring interactive command preset chips, real-time risk gauges, live telemetry timeline tables, and streaming AI responses.
+
 ---
 
 ## 🛡️ Safety & Non-Invasive Philosophy

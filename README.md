@@ -56,6 +56,9 @@ Allows mortals to consult the Specter on Linux kernel concepts, debugging tricky
 ### 5. 🐚 Interactive REPL (`ghostshell interactive`)
 A dedicated interactive terminal shell powered by `prompt-toolkit` and `Rich`, featuring custom spectral prompts (`👻 ghost@crypt ❯`), command history, auto-auditing, and status diagnostics.
 
+### 6. 🌐 Modern Web UI Dashboard (`ghostshell web` or `ghostshell ui`)
+A dark-mode glassmorphic browser dashboard with ambient floating particles, interactive command presets, real-time risk gauges, log evidence viewer, and local SQLite audit ledger.
+
 ---
 
 ## 🏗️ Architecture
@@ -154,7 +157,14 @@ ghostshell interactive
 ghostshell history
 ```
 
-### 7. Run Automated Demo Showcase
+### 7. Launch Spooky Web UI Dashboard
+```bash
+ghostshell web
+# Or specify a custom port:
+ghostshell web --port 8888
+```
+
+### 8. Run Automated Demo Showcase
 ```bash
 ghostshell demo
 ```

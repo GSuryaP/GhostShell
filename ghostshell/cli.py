@@ -48,7 +48,8 @@ def main(
         print_banner(console)
         console.print(
             f"\n[{CRYPT_PURPLE}]Summon the Specter with a subcommand or enter interactive mode:[/{CRYPT_PURPLE}]\n"
-            f"  [bold {SPECTRAL_GREEN}]ghostshell interactive[/]     Enter interactive REPL\n"
+            f"  [bold {SPECTRAL_GREEN}]ghostshell web[/]             🌐 Launch spooky Web UI dashboard in browser\n"
+            f"  [bold {SPECTRAL_GREEN}]ghostshell interactive[/]     Enter interactive terminal REPL\n"
             f"  [bold {SPECTRAL_GREEN}]ghostshell ghost <cmd>[/]      Spooky command explanation\n"
             f"  [bold {SPECTRAL_GREEN}]ghostshell alert <cmd>[/]      Possession detection & safe alternative\n"
             f"  [bold {SPECTRAL_GREEN}]ghostshell logs[/]             Haunted log storytelling from system logs\n"
@@ -249,6 +250,46 @@ def run_demo(
             border_style=SPECTRAL_GREEN,
         )
     )
+
+@app.command(name="web")
+def web_cmd(
+    port: int = typer.Option(8888, "--port", "-p", help="Port to bind the GhostShell Web UI server"),
+    host: str = typer.Option("127.0.0.1", "--host", "-h", help="Host address to bind"),
+    no_browser: bool = typer.Option(False, "--no-browser", help="Do not automatically open browser"),
+):
+    """🌐 Launch the GhostShell Spooky Web UI Dashboard in your browser."""
+    import webbrowser
+    import uvicorn
+    from ghostshell.web.app import app as web_app
+    
+    url = f"http://{host}:{port}"
+    print_banner(console)
+    console.print(
+        Panel(
+            f"[bold {SPECTRAL_GREEN}]👻 GhostShell Web Dashboard Awakening...[/{SPECTRAL_GREEN}]\n\n"
+            f"🔮 Server running at: [bold {HAUNT_CYAN}]{url}[/]\n"
+            f"👻 Connected to: [bold white]Gemma 2 (2B)[/] via local Ollama\n"
+            f"[dim]Press Ctrl+C to release the Specter and shut down server.[/dim]",
+            title="[bold #00ff87]Spectral Web Portal[/bold #00ff87]",
+            border_style=HAUNT_CYAN,
+        )
+    )
+    if not no_browser:
+        try:
+            webbrowser.open(url)
+        except Exception:
+            pass
+    
+    uvicorn.run(web_app, host=host, port=port, log_level="warning")
+
+@app.command(name="ui")
+def ui_cmd(
+    port: int = typer.Option(8888, "--port", "-p", help="Port to bind the GhostShell Web UI server"),
+    host: str = typer.Option("127.0.0.1", "--host", "-h", help="Host address to bind"),
+    no_browser: bool = typer.Option(False, "--no-browser", help="Do not automatically open browser"),
+):
+    """Alias for 'ghostshell web'."""
+    web_cmd(port=port, host=host, no_browser=no_browser)
 
 if __name__ == "__main__":
     app()

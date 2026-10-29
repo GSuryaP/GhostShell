@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GhostShell — Spooky AI-Powered Linux Terminal Companion</title>
+  <meta name="description" content="A spooky, 100% offline AI-powered Linux terminal companion for Hacktoberfest 2026. Explains commands, audits dangerous operations, and narrates haunted system logs.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👻</text></svg>">
+  
+  <!-- Modern Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/static/index.css">
+</head>
+<body>
+  <!-- Ambient Spectral Glow & Floating Ghost Particles -->
+  <div class="ambient-fog" aria-hidden="true"></div>
+  <canvas id="spectralCanvas" class="spectral-canvas" aria-hidden="true"></canvas>
+
+  <div class="app-container">
+    <!-- Header / Navigation Bar -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-ghost" id="brandGhostIcon">👻</div>
+        <div class="brand-text">
+          <h1 class="brand-title">GhostShell</h1>
+          <span class="brand-subtitle">Spooky Linux Terminal Companion • Hacktoberfest 2026</span>
+        </div>
+      </div>
+
+      <div class="system-status-cluster">
+        <div class="status-badge" id="aiStatusBadge">
+          <span class="status-dot pulsing-green"></span>
+          <span id="aiStatusText">Ollama: Gemma 2 (2B)</span>
+        </div>
+        <div class="badge-tag">100% Offline</div>
+      </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <nav class="nav-tabs" aria-label="Main Navigation">
+      <button class="nav-tab active" id="tabBtnGhost" data-tab="tabGhost">
+        <span class="tab-icon">👻</span> Ghost Mode
+      </button>
+      <button class="nav-tab" id="tabBtnAlert" data-tab="tabAlert">
+        <span class="tab-icon">⚠️</span> Possession Alert
+      </button>
+      <button class="nav-tab" id="tabBtnLogs" data-tab="tabLogs">
+        <span class="tab-icon">📜</span> Haunted Logs
+      </button>
+      <button class="nav-tab" id="tabBtnAsk" data-tab="tabAsk">
+        <span class="tab-icon">🔮</span> Ask the Ghost
+      </button>
+      <button class="nav-tab" id="tabBtnLedger" data-tab="tabLedger">
+        <span class="tab-icon">🏛️</span> Crypt Ledger
+      </button>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- TAB 1: GHOST MODE -->
+      <section class="tab-panel active" id="tabGhost" aria-labelledby="tabBtnGhost">
+        <div class="panel-header">
+          <h2>Ghost Mode — Arcane Command Decipherer</h2>
+          <p class="panel-desc">Summon the Specter to explain cryptic Linux commands and flags with spooky, gothic wisdom.</p>
+        </div>
+
+        <div class="interactive-card">
+          <div class="quick-presets">
+            <span class="preset-label">Quick Incantations:</span>
+            <button class="preset-pill" data-target="ghostInput" data-cmd="tar -czvf backup.tar.gz /var/log">tar -czvf backup.tar.gz /var/log</button>
+            <button class="preset-pill" data-target="ghostInput" data-cmd="find / -type f -size +100M -exec ls -lh {} \;">find large files</button>
+            <button class="preset-pill" data-target="ghostInput" data-cmd="awk '{print $1}' /var/log/auth.log | sort | uniq -c">awk auth.log IPs</button>
+            <button class="preset-pill" data-target="ghostInput" data-cmd="rsync -avzP --delete src/ dest/">rsync mirror</button>
+          </div>
+
+          <form id="ghostForm" class="command-form">
+            <div class="input-shell-wrapper">
+              <span class="shell-prompt">ghost@crypt ❯</span>
+              <input type="text" id="ghostInput" class="shell-input" placeholder="Enter bash command to explain (e.g. tar -czvf ...)" autocomplete="off" required>
+              <button type="submit" id="btnSummonGhost" class="btn-primary">
+                <span>Summon Ghost</span> 🔮
+              </button>
+            </div>
+          </form>
+
+          <div id="ghostResultArea" class="result-area hidden">
+            <div class="terminal-window">
+              <div class="terminal-bar">
+                <div class="window-controls">
+                  <span class="dot close"></span>
+                  <span class="dot minimize"></span>
+                  <span class="dot maximize"></span>
+                </div>
+                <span class="terminal-title">ghost-mode-explanation.md</span>
+                <button class="btn-copy" id="btnCopyGhost">Copy Markdown</button>
+              </div>
+              <div class="terminal-body" id="ghostResultContent"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: POSSESSION ALERT -->
+      <section class="tab-panel" id="tabAlert" aria-labelledby="tabBtnAlert">
+        <div class="panel-header">
+          <h2>Possession Alerts — Destructive Command Guard</h2>
+          <p class="panel-desc">The two-layer Guardian audits commands against lethal patterns and offers safe exorcisms.</p>
+        </div>
+
+        <div class="interactive-card danger-zone">
+          <div class="quick-presets">
+            <span class="preset-label">Test Dangerous Invocations:</span>
+            <button class="preset-pill pill-danger" data-target="alertInput" data-cmd="rm -rf / --no-preserve-root">rm -rf /</button>
+            <button class="preset-pill pill-danger" data-target="alertInput" data-cmd=":(){ :|:& };:">Fork Bomb</button>
+            <button class="preset-pill pill-danger" data-target="alertInput" data-cmd="dd if=/dev/zero of=/dev/sda bs=1M">dd raw drive</button>
+            <button class="preset-pill pill-danger" data-target="alertInput" data-cmd="chmod -R 777 /">chmod 777 /</button>
+            <button class="preset-pill pill-safe" data-target="alertInput" data-cmd="ls -la /var/log">ls -la (Clean)</button>
+          </div>
+
+          <form id="alertForm" class="command-form">
+            <div class="input-shell-wrapper danger-border">
+              <span class="shell-prompt danger-prompt">audit@guardian ❯</span>
+              <input type="text" id="alertInput" class="shell-input" placeholder="Test a command for dangerous possession (e.g. rm -rf /)" autocomplete="off" required>
+              <button type="submit" id="btnScanPossession" class="btn-danger">
+                <span>Audit Risks</span> ⚠️
+              </button>
+            </div>
+          </form>
+
+          <div id="alertResultArea" class="result-area hidden">
+            <div id="alertCardContainer" class="alert-verdict-card">
+              <!-- Dynamically populated verdict card -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 3: HAUNTED LOGS -->
+      <section class="tab-panel" id="tabLogs" aria-labelledby="tabBtnLogs">
+        <div class="panel-header">
+          <h2>Haunted Logs — System Telemetry Chronicles</h2>
+          <p class="panel-desc">Gathers Linux error logs (`journalctl`), scrubs sensitive PII, and weaves an eerie gothic investigation.</p>
+        </div>
+
+        <div class="interactive-card">
+          <div class="log-controls">
+            <div class="control-group">
+              <label for="logLinesSelect">Telemetry Depth:</label>
+              <select id="logLinesSelect" class="form-select">
+                <option value="15" selected>15 Lines (Fast Digest)</option>
+                <option value="30">30 Lines (Deep Scan)</option>
+                <option value="50">50 Lines (Full Crypt)</option>
+              </select>
+            </div>
+
+            <button id="btnFetchLogs" class="btn-primary">
+              <span>Collect &amp; Narrate Logs</span> 📜
+            </button>
+          </div>
+
+          <div id="logsResultArea" class="result-area hidden">
+            <div class="evidence-section">
+              <h3 class="section-subtitle">Extracted Paranormal Evidence (Sanitized)</h3>
+              <div class="table-responsive">
+                <table class="evidence-table" id="evidenceTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>Daemon/Unit</th>
+                      <th>Level</th>
+                      <th>Raw Event Message</th>
+                    </tr>
+                  </thead>
+                  <tbody id="evidenceTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="narrative-section">
+              <h3 class="section-subtitle">The Haunting Chronicles</h3>
+              <div class="terminal-window">
+                <div class="terminal-bar">
+                  <span class="terminal-title">system-haunting-chronicles.txt</span>
+                </div>
+                <div class="terminal-body" id="logsNarrativeContent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: ASK THE GHOST -->
+      <section class="tab-panel" id="tabAsk" aria-labelledby="tabBtnAsk">
+        <div class="panel-header">
+          <h2>Ask the Ghost — Offline Linux Oracle</h2>
+          <p class="panel-desc">Consult Specter on terminal tricks, kernel mysteries, or daemon troubleshooting.</p>
+        </div>
+
+        <div class="interactive-card chat-card">
+          <div class="chat-history" id="chatHistoryContainer">
+            <div class="chat-message ghost-message">
+              <div class="chat-avatar">👻</div>
+              <div class="chat-bubble">
+                <p>Greetings, mortal. I am <strong>Specter</strong>, guardian of this terminal since the UNIX Epoch. What dark secrets or arcane kernel lore do you seek to unearth?</p>
+              </div>
+            </div>
+          </div>
+
+          <form id="askForm" class="chat-input-form">
+            <div class="chat-input-row">
+              <input type="text" id="askInput" class="chat-input" placeholder="Ask anything: 'What is a zombie process and how do I kill it?'" autocomplete="off" required>
+              <label class="checkbox-container">
+                <input type="checkbox" id="chkIncludeLogs">
+                <span class="checkmark"></span>
+                Feed Recent Logs
+              </label>
+              <button type="submit" id="btnAskSubmit" class="btn-primary">
+                <span>Inquire</span> 🔮
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- TAB 5: CRYPT LEDGER (HISTORY) -->
+      <section class="tab-panel" id="tabLedger" aria-labelledby="tabBtnLedger">
+        <div class="panel-header">
+          <h2>Crypt Ledger — Local SQLite Audit History</h2>
+          <p class="panel-desc">All commands audited by GhostShell are recorded in your private local SQLite database.</p>
+        </div>
+
+        <div class="interactive-card">
+          <div class="ledger-actions">
+            <button id="btnRefreshLedger" class="btn-secondary">
+              <span>Refresh Ledger</span> 🔄
+            </button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="ledger-table" id="ledgerTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Command</th>
+                  <th>Mode</th>
+                  <th>Hazard Verdict</th>
+                  <th>Recorded At</th>
+                </tr>
+              </thead>
+              <tbody id="ledgerTableBody">
+                <tr><td colspan="5" class="text-center">Loading audit records...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <div class="footer-links">
+        <span>👻 <strong>GhostShell</strong> v0.1.0</span>
+        <span>•</span>
+        <span>Hacktoberfest 2026: Ghost in the Machine</span>
+        <span>•</span>
+        <span>100% Offline AI (Gemma 2 via Ollama)</span>
+        <span>•</span>
+        <a href="https://github.com/GSuryaP/GhostShell" target="_blank" rel="noopener">GitHub Repository</a>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay hidden" aria-hidden="true">
+    <div class="loading-content">
+      <div class="spooky-spinner">👻</div>
+      <p id="loadingSpookyText" class="loading-text">Summoning spirits through the kernel mist...</p>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
