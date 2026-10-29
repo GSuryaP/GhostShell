@@ -111,7 +111,7 @@ To add a new theme (e.g., `solarized-dark`), add a new CSS block to `index.css`:
 
 ## ⌨️ Components & Interaction Patterns
 
-1. **Window Chrome**: Top bar with 3 dots (`● ● ●`), tab strip (`0: ghost`, `1: alert`, etc.), and host title.
+1. **Window Chrome**: Top bar with 3 dots (`● ● ●`), tab strip (`~: home`, `1: ghost`, `2: alert`, etc.), and host title.
 2. **Bracketed Buttons**: `[ Submit ]` with inverted color hover (e.g. solid filled text on inverted background).
 3. **Prompt Inputs**: `❯ ` prefix with a blinking block cursor (`steps(1)`).
 4. **Embedded Border Titles**: Cards have their label embedded directly in the top border:

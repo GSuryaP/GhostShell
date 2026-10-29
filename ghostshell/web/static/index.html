@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,10 +10,13 @@
   <!-- Self-hosted / Fast Google Fonts with font-display: swap -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="/static/index.css">
 </head>
+
 <body>
   <!-- Optional Faint Scanline Overlay (≤ 2.5% opacity, toggleable) -->
   <div id="scanlineOverlay" class="scanline-overlay" aria-hidden="true"></div>
@@ -35,19 +39,20 @@
               <span class="path-root" aria-hidden="true">~:</span> home
             </button>
             <button class="terminal-tab" id="tabBtnGhost" data-tab="tabGhost" data-path="~/ghostshell/ghost-mode">
-              <span class="path-root" aria-hidden="true">0:</span> ghost
+              <span class="path-root" aria-hidden="true">1:</span> ghost
             </button>
-            <button class="terminal-tab" id="tabBtnAlert" data-tab="tabAlert" data-path="~/ghostshell/possession-alerts">
-              <span class="path-root" aria-hidden="true">1:</span> alert
+            <button class="terminal-tab" id="tabBtnAlert" data-tab="tabAlert"
+              data-path="~/ghostshell/possession-alerts">
+              <span class="path-root" aria-hidden="true">2:</span> alert
             </button>
             <button class="terminal-tab" id="tabBtnLogs" data-tab="tabLogs" data-path="~/ghostshell/haunted-logs">
-              <span class="path-root" aria-hidden="true">2:</span> logs
+              <span class="path-root" aria-hidden="true">3:</span> logs
             </button>
             <button class="terminal-tab" id="tabBtnAsk" data-tab="tabAsk" data-path="~/ghostshell/oracle">
-              <span class="path-root" aria-hidden="true">3:</span> oracle
+              <span class="path-root" aria-hidden="true">4:</span> oracle
             </button>
             <button class="terminal-tab" id="tabBtnLedger" data-tab="tabLedger" data-path="~/ghostshell/crypt-ledger">
-              <span class="path-root" aria-hidden="true">4:</span> ledger
+              <span class="path-root" aria-hidden="true">5:</span> ledger
             </button>
           </nav>
         </div>
@@ -84,13 +89,15 @@
 
         <!-- TAB ~: HOME PAGE (DASHBOARD & OVERVIEW) -->
         <section class="tab-pane active" id="tabHome" aria-labelledby="tabBtnHome">
-          
+
           <!-- Encrypted Visual Representation & Cyber Cipher Terminal HUD -->
           <div class="home-encrypted-banner" id="homeEncryptedBanner">
             <div class="encrypted-emblem-box">
               <div class="emblem-corner-tag">┌─ [ 0x7F_BINARY_SPECTER ] ─┐</div>
-              <img src="/static/ghost_matrix_dark.jpg?v=3" alt="GhostShell Binary Matrix Ghost (Dark)" class="encrypted-emblem-img dark-theme-img" id="ghostEmblemImgDark">
-              <img src="/static/ghost_matrix_light.jpg?v=3" alt="GhostShell Binary Matrix Ghost (Light)" class="encrypted-emblem-img light-theme-img" id="ghostEmblemImgLight">
+              <img src="/static/ghost_matrix_dark.jpg?v=3" alt="GhostShell Binary Matrix Ghost (Dark)"
+                class="encrypted-emblem-img dark-theme-img" id="ghostEmblemImgDark">
+              <img src="/static/ghost_matrix_light.jpg?v=3" alt="GhostShell Binary Matrix Ghost (Light)"
+                class="encrypted-emblem-img light-theme-img" id="ghostEmblemImgLight">
               <div class="encrypted-badge-label">
                 <span class="pulse-cipher-dot" aria-hidden="true">●</span>
                 <span id="emblemCipherLabel">CIPHER: BINARY_MATRIX</span>
@@ -101,22 +108,31 @@
               <div class="cipher-hud-header">
                 <span class="cipher-hud-title">┌─ [ LIVE_POSIX_CRYPT_STREAM // AIR-GAPPED_MEMORY ] ─┐</span>
                 <div class="cipher-hud-actions">
-                  <button type="button" class="btn-cipher-action" id="btnCycleCipher" title="Cycle cryptographic entropy">[ ⟳ CYCLE ENTROPY ]</button>
-                  <button type="button" class="btn-cipher-action" id="btnCopyCipherHash" title="Copy SHA256 integrity hash">[ 📋 COPY HASH ]</button>
+                  <button type="button" class="btn-cipher-action" id="btnCycleCipher"
+                    title="Cycle cryptographic entropy">[ ⟳ CYCLE ENTROPY ]</button>
+                  <button type="button" class="btn-cipher-action" id="btnCopyCipherHash"
+                    title="Copy SHA256 integrity hash">[ 📋 COPY HASH ]</button>
                 </div>
               </div>
 
               <div class="cipher-hex-stream" id="cipherHexStream">
-                <span style="color: var(--ansi-magenta);">0x0000:</span> 53 50 45 43 54 45 52 00  7F 45 4C 46 02 01 01 00  |SPECTER..ELF....| <span style="color: var(--ansi-cyan);">[AES-256-GCM]</span><br>
-                <span style="color: var(--ansi-magenta);">0x0010:</span> 47 68 6F 73 74 53 68 65  6C 6C 32 30 32 36 21 00  |GhostShell2026!.| <span style="color: var(--ansi-green);">[SHA256:VERIFIED]</span><br>
-                <span style="color: var(--ansi-magenta);">0x0020:</span> 01 00 3E 00 01 00 00 00  B0 0F 40 00 00 00 00 00  |..&gt;.......@.....| <span style="color: var(--ansi-yellow);" id="liveEntropyBadge">[ENTROPY:99.98%]</span><br>
-                <span style="color: var(--ansi-magenta);">0x0030:</span> 4F 46 46 4C 49 4E 45 00  47 45 4D 4D 41 32 2D 32  |OFFLINE.GEMMA2-2| <span style="color: var(--ansi-blue);">[AIR-GAPPED:OK]</span>
+                <span style="color: var(--ansi-magenta);">0x0000:</span> 53 50 45 43 54 45 52 00 7F 45 4C 46 02 01 01 00
+                |SPECTER..ELF....| <span style="color: var(--ansi-cyan);">[AES-256-GCM]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0010:</span> 47 68 6F 73 74 53 68 65 6C 6C 32 30 32 36 21 00
+                |GhostShell2026!.| <span style="color: var(--ansi-green);">[SHA256:VERIFIED]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0020:</span> 01 00 3E 00 01 00 00 00 B0 0F 40 00 00 00 00 00
+                |..&gt;.......@.....| <span style="color: var(--ansi-yellow);"
+                  id="liveEntropyBadge">[ENTROPY:99.98%]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0030:</span> 4F 46 46 4C 49 4E 45 00 47 45 4D 4D 41 32 2D 32
+                |OFFLINE.GEMMA2-2| <span style="color: var(--ansi-blue);">[AIR-GAPPED:OK]</span>
               </div>
-              
+
               <div class="cipher-banner-meta">
                 <div class="cipher-title">GHOSTSHELL // ENCRYPTED TERMINAL GUARDIAN</div>
-                <div class="cipher-subtitle">Hacktoberfest 2026 DEV Challenge: Ghost in the Machine • 100% Offline Local AI</div>
-                <div class="cipher-quote">"Fear not, mortal... Trapped in POSIX memory since the UNIX Epoch (1970). Guardian shield active."</div>
+                <div class="cipher-subtitle">Hacktoberfest 2026 DEV Challenge: Ghost in the Machine • 100% Offline Local
+                  AI</div>
+                <div class="cipher-quote">"Fear not, mortal... Trapped in POSIX memory since the UNIX Epoch (1970).
+                  Guardian shield active."</div>
               </div>
             </div>
           </div>
@@ -157,7 +173,9 @@
             <form id="homeQuickForm">
               <div class="prompt-row">
                 <span class="prompt-prefix" aria-hidden="true">❯</span>
-                <input type="text" id="homeQuickInput" class="term-input" placeholder="try 'tar -czvf ...' or test 'rm -rf / --no-preserve-root'..." autocomplete="off" required>
+                <input type="text" id="homeQuickInput" class="term-input"
+                  placeholder="try 'tar -czvf ...' or test 'rm -rf / --no-preserve-root'..." autocomplete="off"
+                  required>
                 <button type="submit" class="btn-cmd btn-accent">[ EVALUATE ]</button>
               </div>
             </form>
@@ -166,14 +184,15 @@
           <!-- Modules Grid (Clickable Launcher Cards) -->
           <h3 class="heading-subshell">// SYSTEM SUBSYSTEMS &amp; LAUNCHERS</h3>
           <div class="home-actions-grid">
-            
+
             <div class="action-card" data-launch="tabGhost">
               <div class="action-card-header">
-                <span class="action-card-title">0: GHOST MODE</span>
-                <span class="kbd-key">Tab 0</span>
+                <span class="action-card-title">1: GHOST MODE</span>
+                <span class="kbd-key">Tab 1</span>
               </div>
               <p class="action-card-desc">
-                Translates arcane bash commands and cryptic flags into clear, technically precise explanations wrapped in gothic storytelling.
+                Translates arcane bash commands and cryptic flags into clear, technically precise explanations wrapped
+                in gothic storytelling.
               </p>
               <div style="margin-top: 10px;">
                 <span class="term-tag">[tar -czvf]</span>
@@ -184,11 +203,13 @@
 
             <div class="action-card card-danger" data-launch="tabAlert">
               <div class="action-card-header">
-                <span class="action-card-title">1: POSSESSION ALERTS</span>
-                <span class="kbd-key">Tab 1</span>
+                <span class="action-card-title">2: POSSESSION ALERTS</span>
+                <span class="kbd-key">Tab 2</span>
               </div>
               <p class="action-card-desc">
-                Two-layer Guardian checks. Detects lethal commands (<code style="color: var(--ansi-red);">rm -rf /</code>, fork bombs, raw disk writes) in &lt;1ms and offers safe alternatives.
+                Two-layer Guardian checks. Detects lethal commands (<code
+                  style="color: var(--ansi-red);">rm -rf /</code>, fork bombs, raw disk writes) in &lt;1ms and offers
+                safe alternatives.
               </p>
               <div style="margin-top: 10px;">
                 <span class="term-tag tag-danger">[rm -rf /]</span>
@@ -199,11 +220,12 @@
 
             <div class="action-card" data-launch="tabLogs">
               <div class="action-card-header">
-                <span class="action-card-title">2: HAUNTED LOGS</span>
-                <span class="kbd-key">Tab 2</span>
+                <span class="action-card-title">3: HAUNTED LOGS</span>
+                <span class="kbd-key">Tab 3</span>
               </div>
               <p class="action-card-desc">
-                Inspects Linux <code style="color: var(--ansi-cyan);">journalctl</code> error streams, sanitizes IP/tokens, and tells an eerie mystery tale explaining system distress.
+                Inspects Linux <code style="color: var(--ansi-cyan);">journalctl</code> error streams, sanitizes
+                IP/tokens, and tells an eerie mystery tale explaining system distress.
               </p>
               <div style="margin-top: 10px;">
                 <span class="term-tag">[journalctl -p err]</span>
@@ -214,11 +236,12 @@
 
             <div class="action-card" data-launch="tabAsk">
               <div class="action-card-header">
-                <span class="action-card-title">3: TERMINAL ORACLE</span>
-                <span class="kbd-key">Tab 3</span>
+                <span class="action-card-title">4: TERMINAL ORACLE</span>
+                <span class="kbd-key">Tab 4</span>
               </div>
               <p class="action-card-desc">
-                Converse directly with Specter. Ask questions about Linux kernel signals, zombie processes, permissions, or system diagnostics.
+                Converse directly with Specter. Ask questions about Linux kernel signals, zombie processes, permissions,
+                or system diagnostics.
               </p>
               <div style="margin-top: 10px;">
                 <span class="term-tag">[zombie processes]</span>
@@ -229,11 +252,12 @@
 
             <div class="action-card" data-launch="tabLedger">
               <div class="action-card-header">
-                <span class="action-card-title">4: CRYPT LEDGER</span>
-                <span class="kbd-key">Tab 4</span>
+                <span class="action-card-title">5: CRYPT LEDGER</span>
+                <span class="kbd-key">Tab 5</span>
               </div>
               <p class="action-card-desc">
-                Inspect past audited commands, modes, and threat levels stored securely in your local SQLite database (<code style="color: var(--fg-muted);">~/.ghostshell/history.db</code>).
+                Inspect past audited commands, modes, and threat levels stored securely in your local SQLite database
+                (<code style="color: var(--fg-muted);">~/.ghostshell/history.db</code>).
               </p>
               <div style="margin-top: 10px;">
                 <span class="term-tag">[audit records]</span>
@@ -245,7 +269,7 @@
           </div>
         </section>
 
-        <!-- TAB 0: GHOST MODE -->
+        <!-- TAB 1: GHOST MODE -->
         <section class="tab-pane" id="tabGhost" aria-labelledby="tabBtnGhost">
           <div class="pane-card">
             <span class="pane-label">┌─ [ COMMAND_DISPATCHER ] ─┐</span>
@@ -256,16 +280,22 @@
 
             <div class="preset-tag-list">
               <span class="tag-label">Presets:</span>
-              <button class="term-tag" data-target="ghostInput" data-cmd="tar -czvf backup.tar.gz /var/log">[tar -czvf]</button>
-              <button class="term-tag" data-target="ghostInput" data-cmd="find / -type f -size +100M">[find large files]</button>
-              <button class="term-tag" data-target="ghostInput" data-cmd="awk '{print $1}' /var/log/auth.log | sort | uniq -c">[awk auth.log]</button>
-              <button class="term-tag" data-target="ghostInput" data-cmd="rsync -avzP --delete src/ dest/">[rsync mirror]</button>
+              <button class="term-tag" data-target="ghostInput" data-cmd="tar -czvf backup.tar.gz /var/log">[tar
+                -czvf]</button>
+              <button class="term-tag" data-target="ghostInput" data-cmd="find / -type f -size +100M">[find large
+                files]</button>
+              <button class="term-tag" data-target="ghostInput"
+                data-cmd="awk '{print $1}' /var/log/auth.log | sort | uniq -c">[awk auth.log]</button>
+              <button class="term-tag" data-target="ghostInput" data-cmd="rsync -avzP --delete src/ dest/">[rsync
+                mirror]</button>
             </div>
 
             <form id="ghostForm">
               <div class="prompt-row">
                 <span class="prompt-prefix" aria-hidden="true">❯</span>
-                <input type="text" id="ghostInput" class="term-input" placeholder="enter command to inspect (e.g. tar -czvf archive.tar.gz /etc)..." autocomplete="off" required>
+                <input type="text" id="ghostInput" class="term-input"
+                  placeholder="enter command to inspect (e.g. tar -czvf archive.tar.gz /etc)..." autocomplete="off"
+                  required>
                 <button type="submit" class="btn-cmd btn-accent" id="btnSummonGhost">[ EXPLAIN ]</button>
               </div>
             </form>
@@ -282,7 +312,7 @@
           </div>
         </section>
 
-        <!-- TAB 1: POSSESSION ALERT -->
+        <!-- TAB 2: POSSESSION ALERT -->
         <section class="tab-pane" id="tabAlert" aria-labelledby="tabBtnAlert">
           <div class="pane-card">
             <span class="pane-label label-danger">┌─ [ GUARDIAN_SANDBOX ] ─┐</span>
@@ -293,17 +323,22 @@
 
             <div class="preset-tag-list">
               <span class="tag-label">Hazard Invocations:</span>
-              <button class="term-tag tag-danger" data-target="alertInput" data-cmd="rm -rf / --no-preserve-root">[rm -rf /]</button>
+              <button class="term-tag tag-danger" data-target="alertInput" data-cmd="rm -rf / --no-preserve-root">[rm
+                -rf /]</button>
               <button class="term-tag tag-danger" data-target="alertInput" data-cmd=":(){ :|:& };:">[fork bomb]</button>
-              <button class="term-tag tag-danger" data-target="alertInput" data-cmd="dd if=/dev/zero of=/dev/sda bs=1M">[dd raw drive]</button>
-              <button class="term-tag tag-danger" data-target="alertInput" data-cmd="chmod -R 777 /">[chmod 777 /]</button>
-              <button class="term-tag tag-success" data-target="alertInput" data-cmd="ls -la /var/log">[ls -la (safe)]</button>
+              <button class="term-tag tag-danger" data-target="alertInput"
+                data-cmd="dd if=/dev/zero of=/dev/sda bs=1M">[dd raw drive]</button>
+              <button class="term-tag tag-danger" data-target="alertInput" data-cmd="chmod -R 777 /">[chmod 777
+                /]</button>
+              <button class="term-tag tag-success" data-target="alertInput" data-cmd="ls -la /var/log">[ls -la
+                (safe)]</button>
             </div>
 
             <form id="alertForm">
               <div class="prompt-row row-danger">
                 <span class="prompt-prefix prefix-danger" aria-hidden="true">❯</span>
-                <input type="text" id="alertInput" class="term-input" placeholder="test command for destructive hazards (e.g. rm -rf /)..." autocomplete="off" required>
+                <input type="text" id="alertInput" class="term-input"
+                  placeholder="test command for destructive hazards (e.g. rm -rf /)..." autocomplete="off" required>
                 <button type="submit" class="btn-cmd btn-danger" id="btnScanPossession">[ AUDIT ]</button>
               </div>
             </form>
@@ -316,7 +351,7 @@
           </div>
         </section>
 
-        <!-- TAB 2: HAUNTED LOGS -->
+        <!-- TAB 3: HAUNTED LOGS -->
         <section class="tab-pane" id="tabLogs" aria-labelledby="tabBtnLogs">
           <div class="pane-card">
             <span class="pane-label">┌─ [ TELEMETRY_INGESTION ] ─┐</span>
@@ -355,13 +390,14 @@
           </div>
         </section>
 
-        <!-- TAB 3: ASK THE GHOST / ORACLE -->
+        <!-- TAB 4: ASK THE GHOST / ORACLE -->
         <section class="tab-pane" id="tabAsk" aria-labelledby="tabBtnAsk">
           <div class="pane-card">
             <span class="pane-label">┌─ [ TERMINAL_REPL ] ─┐</span>
             <h2 class="heading-shell">## Ask the Ghost: Offline Linux Oracle</h2>
 
-            <div id="chatHistoryContainer" style="max-height: 440px; overflow-y: auto; margin-bottom: 14px; padding-right: 6px;">
+            <div id="chatHistoryContainer"
+              style="max-height: 440px; overflow-y: auto; margin-bottom: 14px; padding-right: 6px;">
               <div class="term-alert alert-ok">
                 <span class="alert-tag">[ OK ]</span>
                 <span>Specter initialized. Ask any Linux concept, kernel signal, or debugging problem.</span>
@@ -371,8 +407,10 @@
             <form id="askForm">
               <div class="prompt-row">
                 <span class="prompt-prefix" aria-hidden="true">❯</span>
-                <input type="text" id="askInput" class="term-input" placeholder="ask question (e.g. What is a zombie process in Linux?)..." autocomplete="off" required>
-                <label style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--fg-muted); margin: 0 10px; cursor: pointer; user-select: none;">
+                <input type="text" id="askInput" class="term-input"
+                  placeholder="ask question (e.g. What is a zombie process in Linux?)..." autocomplete="off" required>
+                <label
+                  style="display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--fg-muted); margin: 0 10px; cursor: pointer; user-select: none;">
                   <input type="checkbox" id="chkIncludeLogs">
                   <span>feed_logs</span>
                 </label>
@@ -382,7 +420,7 @@
           </div>
         </section>
 
-        <!-- TAB 4: CRYPT LEDGER (HISTORY) -->
+        <!-- TAB 5: CRYPT LEDGER (HISTORY) -->
         <section class="tab-pane" id="tabLedger" aria-labelledby="tabBtnLedger">
           <div class="pane-card">
             <span class="pane-label">┌─ [ SQLITE_AUDIT_LOG ] ─┐</span>
@@ -403,7 +441,9 @@
                   </tr>
                 </thead>
                 <tbody id="ledgerTableBody">
-                  <tr><td colspan="5">Loading ledger...</td></tr>
+                  <tr>
+                    <td colspan="5">Loading ledger...</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -419,7 +459,8 @@
     <div class="palette-box">
       <div class="palette-header">
         <span class="palette-prompt" aria-hidden="true">❯</span>
-        <input type="text" id="paletteSearchInput" class="palette-input" placeholder="Type a command or jump to section (e.g. home, ghost, alert, theme)..." autocomplete="off">
+        <input type="text" id="paletteSearchInput" class="palette-input"
+          placeholder="Type a command or jump to section (e.g. home, ghost, alert, theme)..." autocomplete="off">
         <span class="kbd-key">ESC</span>
       </div>
       <ul class="palette-list" id="paletteResultsList"></ul>
@@ -435,12 +476,30 @@
       </div>
       <table class="shortcuts-table">
         <tbody>
-          <tr><td><span class="kbd-key">Ctrl+K</span> / <span class="kbd-key">Cmd+K</span></td><td>Open Command Palette</td></tr>
-          <tr><td><span class="kbd-key">0</span> - <span class="kbd-key">5</span></td><td>Switch Tabs directly (~ to 4)</td></tr>
-          <tr><td><span class="kbd-key">t</span></td><td>Toggle Dark / Light Mode</td></tr>
-          <tr><td><span class="kbd-key">s</span></td><td>Toggle Scanline Filter</td></tr>
-          <tr><td><span class="kbd-key">?</span></td><td>Open this shortcuts cheat sheet</td></tr>
-          <tr><td><span class="kbd-key">Esc</span></td><td>Close Modals</td></tr>
+          <tr>
+            <td><span class="kbd-key">Ctrl+K</span> / <span class="kbd-key">Cmd+K</span></td>
+            <td>Open Command Palette</td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">~</span> / <span class="kbd-key">1</span> - <span class="kbd-key">5</span></td>
+            <td>Switch Tabs directly (~, 1 to 5)</td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">t</span></td>
+            <td>Toggle Dark / Light Mode</td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">s</span></td>
+            <td>Toggle Scanline Filter</td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">?</span></td>
+            <td>Open this shortcuts cheat sheet</td>
+          </tr>
+          <tr>
+            <td><span class="kbd-key">Esc</span></td>
+            <td>Close Modals</td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -456,9 +515,12 @@
     </div>
 
     <div class="status-cluster-right">
-      <span class="status-segment status-clickable" id="btnToggleScanlines" title="Toggle Scanline Overlay">[scanlines: on]</span>
-      <span class="status-segment status-clickable" id="btnToggleThemeStatus" title="Toggle Dark/Light Mode">[mode: dark]</span>
-      <span class="status-segment status-clickable" id="btnOpenPalette" title="Open Command Palette [Ctrl+K]">[ ^K ]</span>
+      <span class="status-segment status-clickable" id="btnToggleScanlines" title="Toggle Scanline Overlay">[scanlines:
+        on]</span>
+      <span class="status-segment status-clickable" id="btnToggleThemeStatus" title="Toggle Dark/Light Mode">[mode:
+        dark]</span>
+      <span class="status-segment status-clickable" id="btnOpenPalette" title="Open Command Palette [Ctrl+K]">[ ^K
+        ]</span>
       <span class="status-segment status-clickable" id="btnOpenShortcuts" title="Keyboard Shortcuts [?]">[ ? ]</span>
       <span class="status-segment" id="statusClock">16:35</span>
     </div>
@@ -466,4 +528,5 @@
 
   <script src="/static/app.js"></script>
 </body>
+
 </html>

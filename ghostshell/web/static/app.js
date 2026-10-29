@@ -280,11 +280,11 @@ function initHomeDashboard() {
    ========================================================================== */
 const PALETTE_COMMANDS = [
   { label: "jump: home (overview)", action: () => switchTabByIndex(0), hint: "Tab ~" },
-  { label: "jump: ghost-mode", action: () => switchTabByIndex(1), hint: "Tab 0" },
-  { label: "jump: possession-alerts", action: () => switchTabByIndex(2), hint: "Tab 1" },
-  { label: "jump: haunted-logs", action: () => switchTabByIndex(3), hint: "Tab 2" },
-  { label: "jump: oracle (ask)", action: () => switchTabByIndex(4), hint: "Tab 3" },
-  { label: "jump: crypt-ledger", action: () => switchTabByIndex(5), hint: "Tab 4" },
+  { label: "jump: ghost-mode", action: () => switchTabByIndex(1), hint: "Tab 1" },
+  { label: "jump: possession-alerts", action: () => switchTabByIndex(2), hint: "Tab 2" },
+  { label: "jump: haunted-logs", action: () => switchTabByIndex(3), hint: "Tab 3" },
+  { label: "jump: oracle (ask)", action: () => switchTabByIndex(4), hint: "Tab 4" },
+  { label: "jump: crypt-ledger", action: () => switchTabByIndex(5), hint: "Tab 5" },
   { label: "toggle: dark / light mode", action: () => window.toggleTheme(), hint: "Switch Mode" },
   { label: "toggle: scanlines", action: () => document.getElementById("btnToggleScanlines")?.click(), hint: "CRT Filter" },
   { label: "run: audit rm -rf /", action: () => { switchTabById("tabAlert"); document.getElementById("alertInput").value = "rm -rf / --no-preserve-root"; document.getElementById("btnScanPossession")?.click(); }, hint: "Lethal Test" },
@@ -424,7 +424,7 @@ function initGlobalKeyboard() {
       if (e.key === "?") {
         e.preventDefault();
         window.openShortcutsModal ? window.openShortcutsModal() : null;
-      } else if (e.key === "0" || e.key === "`") {
+      } else if (e.key === "~" || e.key === "0" || e.key === "`") {
         switchTabByIndex(0);
       } else if (["1", "2", "3", "4", "5"].includes(e.key)) {
         switchTabByIndex(parseInt(e.key, 10));
@@ -438,7 +438,7 @@ function initGlobalKeyboard() {
 }
 
 /* ==========================================================================
-   10. Ghost Mode (Tab 0)
+   10. Ghost Mode (Tab 1)
    ========================================================================== */
 function initGhostMode() {
   const form = document.getElementById("ghostForm");
@@ -492,7 +492,7 @@ function initGhostMode() {
 }
 
 /* ==========================================================================
-   11. Possession Alerts (Tab 1)
+   11. Possession Alerts (Tab 2)
    ========================================================================== */
 function initPossessionAlert() {
   const form = document.getElementById("alertForm");
@@ -604,7 +604,7 @@ function initPossessionAlert() {
 }
 
 /* ==========================================================================
-   12. Haunted Logs (Tab 2)
+   12. Haunted Logs (Tab 3)
    ========================================================================== */
 function initHauntedLogs() {
   const btnFetch = document.getElementById("btnFetchLogs");
@@ -664,7 +664,7 @@ function initHauntedLogs() {
 }
 
 /* ==========================================================================
-   13. Oracle Chat (Tab 3)
+   13. Oracle Chat (Tab 4)
    ========================================================================== */
 function initOracleChat() {
   const form = document.getElementById("askForm");
@@ -718,7 +718,7 @@ function initOracleChat() {
 }
 
 /* ==========================================================================
-   14. Crypt Ledger (Tab 4)
+   14. Crypt Ledger (Tab 5)
    ========================================================================== */
 function initLedger() {
   const btnRefresh = document.getElementById("btnRefreshLedger");
