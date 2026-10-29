@@ -4,23 +4,25 @@
 
 ---
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-00ff87.svg?style=flat-square&logo=python&logoColor=white)](https://python.org)
-[![Offline AI](https://img.shields.io/badge/AI-100%25%20Offline%20(Local)-60efff.svg?style=flat-square&logo=ollama&logoColor=white)](https://ollama.com)
-[![Model](https://img.shields.io/badge/Model-Gemma%202%20(2B)-a55eea.svg?style=flat-square)](https://huggingface.co/google/gemma-2-2b)
-[![TUI](https://img.shields.io/badge/TUI-Rich%20%2B%20Prompt--Toolkit-ff9f43.svg?style=flat-square)](https://github.com/Textualize/rich)
-[![License: MIT](https://img.shields.io/badge/License-MIT-ff2a5f.svg?style=flat-square)](LICENSE)
-[![Hacktoberfest 2026](https://img.shields.io/badge/Hacktoberfest-2026%20DEV%20Challenge-orange.svg?style=flat-square)](https://dev.to)
-
-```
-        .-.
-       (o.o)     GHOSTSHELL
-        |=|      The Spooky, AI-Powered Linux Terminal Companion
-       __|__     Hacktoberfest 2026: Ghost in the Machine
-     //.=|=.\\
-    // .=|=. \\  "Fear not, mortal, for I am Specter...
-    \\ .=|=. //   trapped in your terminal since the UNIX Epoch."
-     \\(_=_)//
-```
+<table>
+  <tr>
+    <td width="220" align="center" valign="middle">
+      <img src="assets/ghost_specter.jpg" width="200" alt="GhostShell Binary Specter" />
+    </td>
+    <td valign="middle">
+      <p><strong>Offline AI Linux terminal companion explaining commands and intercepting hazards.</strong></p>
+      <p>Haunt your Ubuntu terminal with local, privacy-first AI that explains commands, exorcises destructive risks, and turns system logs into gothic tales—without taking control of your shell.</p>
+      <p>
+        <a href="https://python.org"><img src="https://img.shields.io/badge/python-3.10+-00ff87.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.10+" /></a>
+        <a href="https://ollama.com"><img src="https://img.shields.io/badge/AI-100%25%20Offline%20(Local)-60efff.svg?style=flat-square&logo=ollama&logoColor=white" alt="Offline AI" /></a>
+        <a href="https://huggingface.co/google/gemma-2-2b"><img src="https://img.shields.io/badge/Model-Gemma%202%20(2B)-a55eea.svg?style=flat-square" alt="Model" /></a>
+        <a href="https://github.com/Textualize/rich"><img src="https://img.shields.io/badge/TUI-Rich%20%2B%20Prompt--Toolkit-ff9f43.svg?style=flat-square" alt="TUI" /></a>
+        <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-ff2a5f.svg?style=flat-square" alt="License: MIT" /></a>
+        <a href="https://dev.to"><img src="https://img.shields.io/badge/Hacktoberfest-2026%20DEV%20Challenge-orange.svg?style=flat-square" alt="Hacktoberfest 2026" /></a>
+      </p>
+    </td>
+  </tr>
+</table>
 
 ---
 
