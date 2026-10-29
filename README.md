@@ -12,6 +12,7 @@
     <td valign="middle">
       <p><strong>Offline AI Linux terminal companion explaining commands and intercepting hazards.</strong></p>
       <p>Haunt your Ubuntu terminal with local, privacy-first AI that explains commands, exorcises destructive risks, and turns system logs into gothic tales—without taking control of your shell.</p>
+      <p>Made by <a href="https://github.com/GSuryaP">Gonella Siva Sai Surya Prakash</a></p>
       <p>
         <a href="https://python.org"><img src="https://img.shields.io/badge/python-3.10+-00ff87.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.10+" /></a>
         <a href="https://ollama.com"><img src="https://img.shields.io/badge/AI-100%25%20Offline%20(Local)-60efff.svg?style=flat-square&logo=ollama&logoColor=white" alt="Offline AI" /></a>
@@ -93,30 +94,6 @@ A dedicated interactive terminal shell powered by `prompt-toolkit` and `Rich`, f
 
 ### 6. Modern Web UI Dashboard (`ghostshell web` or `ghostshell ui`)
 A dark-mode glassmorphic browser dashboard with ambient floating particles, interactive command presets, real-time risk gauges, log evidence viewer, and local SQLite audit ledger.
-
----
-
-## Architecture
-
-```mermaid
-graph TD
-    User([User Terminal Input]) --> CLI[GhostShell CLI / REPL]
-    CLI --> Guardian{Guardian Safety Engine}
-    
-    Guardian -->|Destructive Hazard Detected| Alert[Possession Alert Engine]
-    Guardian -->|Safe Command| Engine[Ghost Mode Engine]
-    
-    Logs[Linux System Logs / journalctl] --> Scrubber[PII & Secret Sanitizer]
-    Scrubber --> Engine
-    
-    Engine --> Ollama[Local Ollama Daemon]
-    Alert --> Ollama
-    Ollama --> Gemma[Gemma 2:2b Local Model]
-    
-    Gemma --> Renderer[Rich Spectral UI Renderer]
-    Renderer --> DB[(SQLite Audit History)]
-    Renderer --> Output([Spooky Terminal Output])
-```
 
 ---
 
@@ -223,6 +200,12 @@ All 44 unit tests run in less than **0.05 seconds** without requiring network ac
 * **No Cloud Telemetry:** Inference runs 100% on your local hardware via Ollama.
 * **No Secret Leakage:** System log ingestion automatically masks external IP addresses (`[SPECTRAL-IP]`), MAC addresses (`[SPECTRAL-MAC]`), and passwords/tokens (`[REDACTED-SECRET]`).
 * **Non-Invasive:** Does not overwrite system aliases or install background daemons.
+
+---
+
+## Author
+
+Made by [Gonella Siva Sai Surya Prakash](https://github.com/GSuryaP).
 
 ---
 
