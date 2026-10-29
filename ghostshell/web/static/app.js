@@ -1,14 +1,15 @@
 /**
- * GhostShell Terminal Emulator Frontend
- * Theme: Warp / Ghostty / iTerm2 Inspired (WCAG AA • ANSI Semantics)
+ * GhostShell Fullscreen Terminal UI Frontend
+ * Home Dashboard • Dark/Light Mode Toggle • Command Palette • WCAG AA Monospace
  */
 
 document.addEventListener("DOMContentLoaded", () => {
   initTypewriter();
   initTabs();
   initClock();
-  initThemeEngine();
+  initDarkLightToggle();
   initScanlineToggle();
+  initHomeDashboard();
   initCommandPalette();
   initShortcutsModal();
   initGhostMode();
@@ -39,7 +40,7 @@ function initTypewriter() {
     if (idx < fullText.length) {
       textEl.textContent += fullText.charAt(idx);
       idx++;
-      setTimeout(typeChar, 18);
+      setTimeout(typeChar, 16);
     }
   }
 
@@ -99,6 +100,13 @@ function switchTabByIndex(index) {
   }
 }
 
+function switchTabById(tabId) {
+  const tabBtn = document.querySelector(`[data-tab="${tabId}"]`);
+  if (tabBtn) {
+    tabBtn.click();
+  }
+}
+
 /* ==========================================================================
    3. Status Bar Clock
    ========================================================================== */
@@ -115,31 +123,40 @@ function initClock() {
 }
 
 /* ==========================================================================
-   4. Theme Palette Engine (Dracula, Nord, Gruvbox, Tokyo Night, Catppuccin)
+   4. Dark / Light Mode Toggle
    ========================================================================== */
-const THEMES = ["dark", "light", "dracula", "nord", "gruvbox", "tokyo-night", "catppuccin"];
-
-function initThemeEngine() {
+function initDarkLightToggle() {
+  const btnHeader = document.getElementById("btnThemeToggle");
+  const btnStatus = document.getElementById("btnToggleThemeStatus");
   const savedTheme = localStorage.getItem("ghostshell_theme") || "dark";
+
   applyTheme(savedTheme);
 
-  const cycleBtn = document.getElementById("btnCycleTheme");
-  if (cycleBtn) {
-    cycleBtn.addEventListener("click", () => {
-      const current = document.documentElement.getAttribute("data-theme") || "dark";
-      const nextIdx = (THEMES.indexOf(current) + 1) % THEMES.length;
-      applyTheme(THEMES[nextIdx]);
-    });
+  function toggleDarkLight() {
+    const current = document.documentElement.getAttribute("data-theme") || "dark";
+    const next = current === "dark" ? "light" : "dark";
+    applyTheme(next);
   }
+
+  if (btnHeader) btnHeader.addEventListener("click", toggleDarkLight);
+  if (btnStatus) btnStatus.addEventListener("click", toggleDarkLight);
+
+  window.toggleTheme = toggleDarkLight;
 }
 
 function applyTheme(themeName) {
   document.documentElement.setAttribute("data-theme", themeName);
   localStorage.setItem("ghostshell_theme", themeName);
 
-  const cycleBtn = document.getElementById("btnCycleTheme");
-  if (cycleBtn) {
-    cycleBtn.textContent = `[theme: ${themeName}]`;
+  const btnHeader = document.getElementById("btnThemeToggle");
+  const btnStatus = document.getElementById("btnToggleThemeStatus");
+
+  if (themeName === "light") {
+    if (btnHeader) btnHeader.textContent = "[ ☾ DARK ]";
+    if (btnStatus) btnStatus.textContent = "[mode: light]";
+  } else {
+    if (btnHeader) btnHeader.textContent = "[ ☼ LIGHT ]";
+    if (btnStatus) btnStatus.textContent = "[mode: dark]";
   }
 }
 
@@ -167,24 +184,64 @@ function initScanlineToggle() {
 }
 
 /* ==========================================================================
-   6. Command Palette (Ctrl+K)
+   6. Home Page Dashboard Logic
+   ========================================================================== */
+function initHomeDashboard() {
+  // Clickable action cards to launch tabs
+  document.querySelectorAll("[data-launch]").forEach((card) => {
+    card.addEventListener("click", () => {
+      const targetTab = card.dataset.launch;
+      switchTabById(targetTab);
+    });
+  });
+
+  // Home Quick Terminal Evaluator Form
+  const quickForm = document.getElementById("homeQuickForm");
+  const quickInput = document.getElementById("homeQuickInput");
+
+  if (quickForm && quickInput) {
+    quickForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const cmd = quickInput.value.trim();
+      if (!cmd) return;
+
+      // Check if command is dangerous
+      const dangerousPatterns = ["rm -rf", "dd ", ":(){", "mkfs", "chmod -R 777", "chmod 000", "> /dev/"];
+      const isSuspect = dangerousPatterns.some((p) => cmd.includes(p));
+
+      if (isSuspect) {
+        switchTabById("tabAlert");
+        const alertIn = document.getElementById("alertInput");
+        if (alertIn) {
+          alertIn.value = cmd;
+          document.getElementById("btnScanPossession")?.click();
+        }
+      } else {
+        switchTabById("tabGhost");
+        const ghostIn = document.getElementById("ghostInput");
+        if (ghostIn) {
+          ghostIn.value = cmd;
+          document.getElementById("btnSummonGhost")?.click();
+        }
+      }
+    });
+  }
+}
+
+/* ==========================================================================
+   7. Command Palette (Ctrl+K)
    ========================================================================== */
 const PALETTE_COMMANDS = [
-  { label: "jump: ghost-mode", action: () => switchTabByIndex(0), hint: "Tab 0" },
-  { label: "jump: possession-alerts", action: () => switchTabByIndex(1), hint: "Tab 1" },
-  { label: "jump: haunted-logs", action: () => switchTabByIndex(2), hint: "Tab 2" },
-  { label: "jump: oracle (ask)", action: () => switchTabByIndex(3), hint: "Tab 3" },
-  { label: "jump: crypt-ledger", action: () => switchTabByIndex(4), hint: "Tab 4" },
-  { label: "theme: Ghostty Dark", action: () => applyTheme("dark"), hint: "Default" },
-  { label: "theme: Terminal Light", action: () => applyTheme("light"), hint: "WCAG Light" },
-  { label: "theme: Dracula", action: () => applyTheme("dracula"), hint: "Purple/Pink" },
-  { label: "theme: Nord", action: () => applyTheme("nord"), hint: "Arctic Blue" },
-  { label: "theme: Gruvbox", action: () => applyTheme("gruvbox"), hint: "Retro Groove" },
-  { label: "theme: Tokyo Night", action: () => applyTheme("tokyo-night"), hint: "Neon Dusk" },
-  { label: "theme: Catppuccin Mocha", action: () => applyTheme("catppuccin"), hint: "Pastel" },
-  { label: "toggle: scanlines", action: () => document.getElementById("btnToggleScanlines")?.click(), hint: "CRT Overlay" },
-  { label: "run: audit rm -rf /", action: () => { switchTabByIndex(1); document.getElementById("alertInput").value = "rm -rf / --no-preserve-root"; document.getElementById("btnScanPossession")?.click(); }, hint: "Lethal Test" },
-  { label: "run: explain tar", action: () => { switchTabByIndex(0); document.getElementById("ghostInput").value = "tar -czvf backup.tar.gz /var/log"; document.getElementById("btnSummonGhost")?.click(); }, hint: "Ghost Mode" },
+  { label: "jump: home (overview)", action: () => switchTabByIndex(0), hint: "Tab ~" },
+  { label: "jump: ghost-mode", action: () => switchTabByIndex(1), hint: "Tab 0" },
+  { label: "jump: possession-alerts", action: () => switchTabByIndex(2), hint: "Tab 1" },
+  { label: "jump: haunted-logs", action: () => switchTabByIndex(3), hint: "Tab 2" },
+  { label: "jump: oracle (ask)", action: () => switchTabByIndex(4), hint: "Tab 3" },
+  { label: "jump: crypt-ledger", action: () => switchTabByIndex(5), hint: "Tab 4" },
+  { label: "toggle: dark / light mode", action: () => window.toggleTheme(), hint: "Switch Mode" },
+  { label: "toggle: scanlines", action: () => document.getElementById("btnToggleScanlines")?.click(), hint: "CRT Filter" },
+  { label: "run: audit rm -rf /", action: () => { switchTabById("tabAlert"); document.getElementById("alertInput").value = "rm -rf / --no-preserve-root"; document.getElementById("btnScanPossession")?.click(); }, hint: "Lethal Test" },
+  { label: "run: explain tar -czvf", action: () => { switchTabById("tabGhost"); document.getElementById("ghostInput").value = "tar -czvf backup.tar.gz /var/log"; document.getElementById("btnSummonGhost")?.click(); }, hint: "Ghost Mode" },
   { label: "help: keyboard shortcuts", action: () => openShortcutsModal(), hint: "Key cheat sheet" },
 ];
 
@@ -272,7 +329,7 @@ function initCommandPalette() {
 }
 
 /* ==========================================================================
-   7. Keyboard Shortcuts Modal (?)
+   8. Keyboard Shortcuts Modal (?)
    ========================================================================== */
 function initShortcutsModal() {
   const modal = document.getElementById("shortcutsModal");
@@ -296,7 +353,7 @@ function initShortcutsModal() {
 }
 
 /* ==========================================================================
-   8. Global Keyboard Shortcuts Handler
+   9. Global Keyboard Shortcuts Handler
    ========================================================================== */
 function initGlobalKeyboard() {
   document.addEventListener("keydown", (e) => {
@@ -320,10 +377,12 @@ function initGlobalKeyboard() {
       if (e.key === "?") {
         e.preventDefault();
         window.openShortcutsModal ? window.openShortcutsModal() : null;
+      } else if (e.key === "0" || e.key === "`") {
+        switchTabByIndex(0);
       } else if (["1", "2", "3", "4", "5"].includes(e.key)) {
-        switchTabByIndex(parseInt(e.key, 10) - 1);
+        switchTabByIndex(parseInt(e.key, 10));
       } else if (e.key.toLowerCase() === "t") {
-        document.getElementById("btnCycleTheme")?.click();
+        window.toggleTheme ? window.toggleTheme() : null;
       } else if (e.key.toLowerCase() === "s") {
         document.getElementById("btnToggleScanlines")?.click();
       }
@@ -332,7 +391,7 @@ function initGlobalKeyboard() {
 }
 
 /* ==========================================================================
-   9. Ghost Mode (Tab 0)
+   10. Ghost Mode (Tab 0)
    ========================================================================== */
 function initGhostMode() {
   const form = document.getElementById("ghostForm");
@@ -342,7 +401,6 @@ function initGhostMode() {
   const btnSubmit = document.getElementById("btnSummonGhost");
   const btnCopy = document.getElementById("btnCopyGhost");
 
-  // Presets click
   document.querySelectorAll("[data-target='ghostInput']").forEach((btn) => {
     btn.addEventListener("click", () => {
       input.value = btn.dataset.cmd;
@@ -387,7 +445,7 @@ function initGhostMode() {
 }
 
 /* ==========================================================================
-   10. Possession Alerts (Tab 1)
+   11. Possession Alerts (Tab 1)
    ========================================================================== */
 function initPossessionAlert() {
   const form = document.getElementById("alertForm");
@@ -499,7 +557,7 @@ function initPossessionAlert() {
 }
 
 /* ==========================================================================
-   11. Haunted Logs (Tab 2)
+   12. Haunted Logs (Tab 2)
    ========================================================================== */
 function initHauntedLogs() {
   const btnFetch = document.getElementById("btnFetchLogs");
@@ -508,7 +566,6 @@ function initHauntedLogs() {
   const narrativeContent = document.getElementById("logsNarrativeContent");
   let selectedLines = 15;
 
-  // Depth selection
   document.querySelectorAll("[data-lines]").forEach((btn) => {
     btn.addEventListener("click", () => {
       document.querySelectorAll("[data-lines]").forEach((b) => b.classList.remove("active-depth"));
@@ -560,7 +617,7 @@ function initHauntedLogs() {
 }
 
 /* ==========================================================================
-   12. Oracle Chat (Tab 3)
+   13. Oracle Chat (Tab 3)
    ========================================================================== */
 function initOracleChat() {
   const form = document.getElementById("askForm");
@@ -614,7 +671,7 @@ function initOracleChat() {
 }
 
 /* ==========================================================================
-   13. Crypt Ledger (Tab 4)
+   14. Crypt Ledger (Tab 4)
    ========================================================================== */
 function initLedger() {
   const btnRefresh = document.getElementById("btnRefreshLedger");
@@ -657,20 +714,24 @@ async function loadLedgerRecords() {
 }
 
 /* ==========================================================================
-   14. System Status Telemetry
+   15. System Status Telemetry
    ========================================================================== */
 async function fetchSystemStatus() {
   const pill = document.getElementById("modelPillText");
   const statusModelTag = document.getElementById("statusModelTag");
+  const homeAiStatus = document.getElementById("homeAiStatus");
+
   try {
     const resp = await fetch("/api/status");
     if (resp.ok) {
       const data = await resp.json();
       if (pill) pill.textContent = `[Ollama: ${data.default_model} (${data.status})]`;
       if (statusModelTag) statusModelTag.textContent = data.default_model;
+      if (homeAiStatus) homeAiStatus.textContent = `${data.default_model} (Ollama)`;
     }
   } catch (e) {
     if (pill) pill.textContent = `[Ollama: offline]`;
+    if (homeAiStatus) homeAiStatus.textContent = "Offline (run ollama serve)";
   }
 }
 

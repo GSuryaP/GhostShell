@@ -17,44 +17,55 @@
   <!-- Optional Faint Scanline Overlay (≤ 2.5% opacity, toggleable) -->
   <div id="scanlineOverlay" class="scanline-overlay" aria-hidden="true"></div>
 
-  <!-- Main Window Frame -->
+  <!-- Fullscreen Window Frame -->
   <div class="window-container">
     <div class="terminal-window-frame">
 
       <!-- Window Chrome (Top Bar) -->
       <header class="window-chrome">
-        <div class="chrome-dots" aria-hidden="true">
-          <span class="dot-glyph dot-close">●</span>
-          <span class="dot-glyph dot-min">●</span>
-          <span class="dot-glyph dot-max">●</span>
+        <div class="chrome-left">
+          <div class="chrome-dots" aria-hidden="true">
+            <span class="dot-glyph dot-close">●</span>
+            <span class="dot-glyph dot-min">●</span>
+            <span class="dot-glyph dot-max">●</span>
+          </div>
+
+          <nav class="tab-strip" aria-label="Terminal Tabs">
+            <button class="terminal-tab active" id="tabBtnHome" data-tab="tabHome" data-path="~/ghostshell/home">
+              <span class="path-root" aria-hidden="true">~:</span> home
+            </button>
+            <button class="terminal-tab" id="tabBtnGhost" data-tab="tabGhost" data-path="~/ghostshell/ghost-mode">
+              <span class="path-root" aria-hidden="true">0:</span> ghost
+            </button>
+            <button class="terminal-tab" id="tabBtnAlert" data-tab="tabAlert" data-path="~/ghostshell/possession-alerts">
+              <span class="path-root" aria-hidden="true">1:</span> alert
+            </button>
+            <button class="terminal-tab" id="tabBtnLogs" data-tab="tabLogs" data-path="~/ghostshell/haunted-logs">
+              <span class="path-root" aria-hidden="true">2:</span> logs
+            </button>
+            <button class="terminal-tab" id="tabBtnAsk" data-tab="tabAsk" data-path="~/ghostshell/oracle">
+              <span class="path-root" aria-hidden="true">3:</span> oracle
+            </button>
+            <button class="terminal-tab" id="tabBtnLedger" data-tab="tabLedger" data-path="~/ghostshell/crypt-ledger">
+              <span class="path-root" aria-hidden="true">4:</span> ledger
+            </button>
+          </nav>
         </div>
 
-        <nav class="tab-strip" aria-label="Terminal Tabs">
-          <button class="terminal-tab active" id="tabBtnGhost" data-tab="tabGhost" data-path="~/ghostshell/ghost-mode">
-            <span class="path-root" aria-hidden="true">0:</span> ghost
+        <div class="chrome-right">
+          <!-- Prominent Dark/Light Mode Toggle Button -->
+          <button class="btn-cmd btn-theme-toggle" id="btnThemeToggle" title="Toggle Dark/Light Mode (Shortcut: t)">
+            [ ☼ LIGHT ]
           </button>
-          <button class="terminal-tab" id="tabBtnAlert" data-tab="tabAlert" data-path="~/ghostshell/possession-alerts">
-            <span class="path-root" aria-hidden="true">1:</span> alert
-          </button>
-          <button class="terminal-tab" id="tabBtnLogs" data-tab="tabLogs" data-path="~/ghostshell/haunted-logs">
-            <span class="path-root" aria-hidden="true">2:</span> logs
-          </button>
-          <button class="terminal-tab" id="tabBtnAsk" data-tab="tabAsk" data-path="~/ghostshell/oracle">
-            <span class="path-root" aria-hidden="true">3:</span> oracle
-          </button>
-          <button class="terminal-tab" id="tabBtnLedger" data-tab="tabLedger" data-path="~/ghostshell/crypt-ledger">
-            <span class="path-root" aria-hidden="true">4:</span> ledger
-          </button>
-        </nav>
-
-        <span class="chrome-title" id="chromeTitleLabel">ghost@crypt: ~/ghostshell</span>
+          <span class="chrome-title" id="chromeTitleLabel">ghost@crypt: ~/ghostshell/home</span>
+        </div>
       </header>
 
       <!-- Breadcrumb Bar -->
       <div class="path-bar">
         <div class="breadcrumb-path" id="breadcrumbPath">
           <span class="path-root" aria-hidden="true">📁</span>
-          <span>~/ghostshell/</span><span class="path-current" id="breadcrumbCurrent">ghost-mode</span>
+          <span>~/ghostshell/</span><span class="path-current" id="breadcrumbCurrent">home</span>
         </div>
         <div class="system-telemetry-pill">
           <span id="modelPillText">[Ollama: gemma2:2b (local)]</span>
@@ -64,15 +75,155 @@
       <!-- Hero / Boot Line with Skippable Typewriter Effect -->
       <section class="hero-boot-line" id="heroBootLine" title="Click to skip typewriter">
         <span class="boot-prompt" aria-hidden="true">$</span>
-        <span class="boot-text" id="typewriterText">ghostshell --mode=daemon --guardian=strict --offline=true</span>
+        <span class="boot-text" id="typewriterText">ghostshell status --all --guardian=strict --offline=true</span>
         <span class="boot-cursor" aria-hidden="true"></span>
       </section>
 
-      <!-- Terminal Body / Content Panes -->
+      <!-- Terminal Body / Fullscreen Content Panes -->
       <main class="terminal-body">
 
+        <!-- TAB ~: HOME PAGE (DASHBOARD & OVERVIEW) -->
+        <section class="tab-pane active" id="tabHome" aria-labelledby="tabBtnHome">
+          
+          <!-- ASCII Art Banner -->
+          <div class="home-ascii-banner">
+            <pre>
+        .-.
+       (o.o)     GHOSTSHELL // SYSTEM OVERVIEW &amp; DASHBOARD
+        |=|      The Spooky, AI-Powered Linux Terminal Companion
+       __|__     Hacktoberfest 2026: Ghost in the Machine
+     //.=|=.\\   100% Offline • Local Gemma 2 (2B) • Non-Invasive Safety
+    // .=|=. \\
+    \\ .=|=. //  "Fear not, mortal, for I am Specter...
+     \\(_=_)//    haunting your terminal since the UNIX Epoch (1970)."</pre>
+          </div>
+
+          <!-- Telemetry 4-Column Stat Grid -->
+          <div class="telemetry-grid">
+            <div class="telemetry-cell">
+              <div class="telemetry-title">[01] LOCAL AI CORE</div>
+              <div class="telemetry-value" id="homeAiStatus">gemma2:2b (Ollama)</div>
+              <div class="telemetry-sub">[ONLINE / 100% OFFLINE]</div>
+            </div>
+
+            <div class="telemetry-cell">
+              <div class="telemetry-title">[02] SAFETY SHIELD</div>
+              <div class="telemetry-value" style="color: var(--ansi-green);">GUARDIAN: ACTIVE</div>
+              <div class="telemetry-sub">[22 LETHAL RULES COMPILED]</div>
+            </div>
+
+            <div class="telemetry-cell">
+              <div class="telemetry-title">[03] PRIVACY SCRUBBER</div>
+              <div class="telemetry-value" style="color: var(--ansi-cyan);">MASKING ENABLED</div>
+              <div class="telemetry-sub">[IP / MAC / TOKEN REDACTION]</div>
+            </div>
+
+            <div class="telemetry-cell">
+              <div class="telemetry-title">[04] LOCAL STORAGE</div>
+              <div class="telemetry-value" style="color: var(--ansi-magenta);">SQLITE 3 ACTIVE</div>
+              <div class="telemetry-sub">[~/.ghostshell/history.db]</div>
+            </div>
+          </div>
+
+          <!-- Quick Terminal Scanner on Home -->
+          <div class="pane-card">
+            <span class="pane-label label-success">┌─ [ QUICK_TERMINAL_EVALUATOR ] ─┐</span>
+            <p style="font-size: 13px; color: var(--fg-muted); margin-bottom: 8px;">
+              Enter any bash invocation below for immediate Guardian safety screening and AI analysis:
+            </p>
+            <form id="homeQuickForm">
+              <div class="prompt-row">
+                <span class="prompt-prefix" aria-hidden="true">❯</span>
+                <input type="text" id="homeQuickInput" class="term-input" placeholder="try 'tar -czvf ...' or test 'rm -rf / --no-preserve-root'..." autocomplete="off" required>
+                <button type="submit" class="btn-cmd btn-accent">[ EVALUATE ]</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Modules Grid (Clickable Launcher Cards) -->
+          <h3 class="heading-subshell">// SYSTEM SUBSYSTEMS &amp; LAUNCHERS</h3>
+          <div class="home-actions-grid">
+            
+            <div class="action-card" data-launch="tabGhost">
+              <div class="action-card-header">
+                <span class="action-card-title">0: GHOST MODE</span>
+                <span class="kbd-key">Tab 0</span>
+              </div>
+              <p class="action-card-desc">
+                Translates arcane bash commands and cryptic flags into clear, technically precise explanations wrapped in gothic storytelling.
+              </p>
+              <div style="margin-top: 10px;">
+                <span class="term-tag">[tar -czvf]</span>
+                <span class="term-tag">[awk auth.log]</span>
+                <span class="term-tag">[find large files]</span>
+              </div>
+            </div>
+
+            <div class="action-card card-danger" data-launch="tabAlert">
+              <div class="action-card-header">
+                <span class="action-card-title">1: POSSESSION ALERTS</span>
+                <span class="kbd-key">Tab 1</span>
+              </div>
+              <p class="action-card-desc">
+                Two-layer Guardian checks. Detects lethal commands (<code style="color: var(--ansi-red);">rm -rf /</code>, fork bombs, raw disk writes) in &lt;1ms and offers safe alternatives.
+              </p>
+              <div style="margin-top: 10px;">
+                <span class="term-tag tag-danger">[rm -rf /]</span>
+                <span class="term-tag tag-danger">[fork bomb]</span>
+                <span class="term-tag tag-danger">[dd raw disk]</span>
+              </div>
+            </div>
+
+            <div class="action-card" data-launch="tabLogs">
+              <div class="action-card-header">
+                <span class="action-card-title">2: HAUNTED LOGS</span>
+                <span class="kbd-key">Tab 2</span>
+              </div>
+              <p class="action-card-desc">
+                Inspects Linux <code style="color: var(--ansi-cyan);">journalctl</code> error streams, sanitizes IP/tokens, and tells an eerie mystery tale explaining system distress.
+              </p>
+              <div style="margin-top: 10px;">
+                <span class="term-tag">[journalctl -p err]</span>
+                <span class="term-tag">[syslog]</span>
+                <span class="term-tag">[evidence table]</span>
+              </div>
+            </div>
+
+            <div class="action-card" data-launch="tabAsk">
+              <div class="action-card-header">
+                <span class="action-card-title">3: TERMINAL ORACLE</span>
+                <span class="kbd-key">Tab 3</span>
+              </div>
+              <p class="action-card-desc">
+                Converse directly with Specter. Ask questions about Linux kernel signals, zombie processes, permissions, or system diagnostics.
+              </p>
+              <div style="margin-top: 10px;">
+                <span class="term-tag">[zombie processes]</span>
+                <span class="term-tag">[signals]</span>
+                <span class="term-tag">[feed logs context]</span>
+              </div>
+            </div>
+
+            <div class="action-card" data-launch="tabLedger">
+              <div class="action-card-header">
+                <span class="action-card-title">4: CRYPT LEDGER</span>
+                <span class="kbd-key">Tab 4</span>
+              </div>
+              <p class="action-card-desc">
+                Inspect past audited commands, modes, and threat levels stored securely in your local SQLite database (<code style="color: var(--fg-muted);">~/.ghostshell/history.db</code>).
+              </p>
+              <div style="margin-top: 10px;">
+                <span class="term-tag">[audit records]</span>
+                <span class="term-tag">[sqlite3]</span>
+                <span class="term-tag">[threat ledger]</span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
         <!-- TAB 0: GHOST MODE -->
-        <section class="tab-pane active" id="tabGhost" aria-labelledby="tabBtnGhost">
+        <section class="tab-pane" id="tabGhost" aria-labelledby="tabBtnGhost">
           <div class="pane-card">
             <span class="pane-label">┌─ [ COMMAND_DISPATCHER ] ─┐</span>
             <h2 class="heading-shell">## Ghost Mode: Arcane Command Decipherer</h2>
@@ -187,7 +338,7 @@
             <span class="pane-label">┌─ [ TERMINAL_REPL ] ─┐</span>
             <h2 class="heading-shell">## Ask the Ghost: Offline Linux Oracle</h2>
 
-            <div id="chatHistoryContainer" style="max-height: 400px; overflow-y: auto; margin-bottom: 14px; padding-right: 6px;">
+            <div id="chatHistoryContainer" style="max-height: 440px; overflow-y: auto; margin-bottom: 14px; padding-right: 6px;">
               <div class="term-alert alert-ok">
                 <span class="alert-tag">[ OK ]</span>
                 <span>Specter initialized. Ask any Linux concept, kernel signal, or debugging problem.</span>
@@ -245,7 +396,7 @@
     <div class="palette-box">
       <div class="palette-header">
         <span class="palette-prompt" aria-hidden="true">❯</span>
-        <input type="text" id="paletteSearchInput" class="palette-input" placeholder="Type a command or jump to section (e.g. ghost, alert, logs, theme)..." autocomplete="off">
+        <input type="text" id="paletteSearchInput" class="palette-input" placeholder="Type a command or jump to section (e.g. home, ghost, alert, theme)..." autocomplete="off">
         <span class="kbd-key">ESC</span>
       </div>
       <ul class="palette-list" id="paletteResultsList"></ul>
@@ -262,11 +413,10 @@
       <table class="shortcuts-table">
         <tbody>
           <tr><td><span class="kbd-key">Ctrl+K</span> / <span class="kbd-key">Cmd+K</span></td><td>Open Command Palette</td></tr>
-          <tr><td><span class="kbd-key">1</span> - <span class="kbd-key">5</span></td><td>Switch Tabs directly</td></tr>
-          <tr><td><span class="kbd-key">j</span> / <span class="kbd-key">k</span></td><td>Navigate lists in palette</td></tr>
-          <tr><td><span class="kbd-key">?</span></td><td>Open this shortcuts cheat sheet</td></tr>
-          <tr><td><span class="kbd-key">t</span></td><td>Cycle Color Theme Palettes</td></tr>
+          <tr><td><span class="kbd-key">0</span> - <span class="kbd-key">5</span></td><td>Switch Tabs directly (~ to 4)</td></tr>
+          <tr><td><span class="kbd-key">t</span></td><td>Toggle Dark / Light Mode</td></tr>
           <tr><td><span class="kbd-key">s</span></td><td>Toggle Scanline Filter</td></tr>
+          <tr><td><span class="kbd-key">?</span></td><td>Open this shortcuts cheat sheet</td></tr>
           <tr><td><span class="kbd-key">Esc</span></td><td>Close Modals</td></tr>
         </tbody>
       </table>
@@ -277,17 +427,17 @@
   <footer class="term-status-bar" role="status">
     <div class="status-cluster-left">
       <span class="status-mode" id="statusModeLabel">NORMAL</span>
-      <span class="status-segment" id="statusCurrentSection">~/ghostshell/ghost-mode</span>
+      <span class="status-segment" id="statusCurrentSection">~/ghostshell/home</span>
       <span class="status-segment status-tag">git:main</span>
       <span class="status-segment status-tag" id="statusModelTag">gemma2:2b</span>
     </div>
 
     <div class="status-cluster-right">
       <span class="status-segment status-clickable" id="btnToggleScanlines" title="Toggle Scanline Overlay">[scanlines: on]</span>
-      <span class="status-segment status-clickable" id="btnCycleTheme" title="Cycle Color Theme">[theme: dark]</span>
+      <span class="status-segment status-clickable" id="btnToggleThemeStatus" title="Toggle Dark/Light Mode">[mode: dark]</span>
       <span class="status-segment status-clickable" id="btnOpenPalette" title="Open Command Palette [Ctrl+K]">[ ^K ]</span>
       <span class="status-segment status-clickable" id="btnOpenShortcuts" title="Keyboard Shortcuts [?]">[ ? ]</span>
-      <span class="status-segment" id="statusClock">16:30</span>
+      <span class="status-segment" id="statusClock">16:35</span>
     </div>
   </footer>
 

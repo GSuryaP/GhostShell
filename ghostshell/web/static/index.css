@@ -1,6 +1,6 @@
 /* ==========================================================================
    GhostShell Terminal UI Theme (Warp / Ghostty / iTerm2 Inspired)
-   Design System: CSS Variables • Monospace Grid • ANSI Semantics
+   Design System: CSS Variables • Monospace Grid • Fullscreen Terminal
    Strict Constraints: No gradients, no drop shadows, no glassmorphism, no emoji
    ========================================================================== */
 
@@ -9,15 +9,15 @@
    -------------------------------------------------------------------------- */
 :root,
 [data-theme="dark"] {
-  --theme-name: "Ghostty Dark";
+  --theme-name: "Dark";
 
-  /* Backgrounds: near-black with cool tint, distinct surface layers */
+  /* Backgrounds: near-black with cool tint */
   --bg-app: #0b0e14;
-  --bg-surface-1: #12161f;
-  --bg-surface-2: #1a202c;
-  --bg-chrome: #0f131a;
-  --bg-hover: #222938;
-  --bg-active: #2d3748;
+  --bg-surface-1: #11151f;
+  --bg-surface-2: #181f2c;
+  --bg-chrome: #0d1117;
+  --bg-hover: #1f2737;
+  --bg-active: #273247;
 
   /* Foregrounds */
   --fg-default: #c9d1d9;
@@ -50,7 +50,7 @@
   --focus-ring: #58a6ff;
 
   /* Status Bar */
-  --status-bar-bg: #12161f;
+  --status-bar-bg: #0d1117;
   --status-bar-fg: #c9d1d9;
   --status-tag-bg: #21262d;
 
@@ -60,14 +60,14 @@
 
 /* Light Theme Variant */
 [data-theme="light"] {
-  --theme-name: "Terminal Light";
+  --theme-name: "Light";
 
   --bg-app: #f6f8fa;
   --bg-surface-1: #ffffff;
   --bg-surface-2: #eaeef2;
-  --bg-chrome: #ebeef2;
-  --bg-hover: #e1e4e8;
-  --bg-active: #d0d7de;
+  --bg-chrome: #e1e4e8;
+  --bg-hover: #d0d7de;
+  --bg-active: #afb8c1;
 
   --fg-default: #24292f;
   --fg-muted: #57606a;
@@ -94,185 +94,15 @@
 
   --focus-ring: #0969da;
 
-  --status-bar-bg: #ebeef2;
+  --status-bar-bg: #e1e4e8;
   --status-bar-fg: #24292f;
   --status-tag-bg: #d0d7de;
 
   --scanline-opacity: 0.015;
 }
 
-/* Dracula Theme Variant */
-[data-theme="dracula"] {
-  --theme-name: "Dracula";
-  --bg-app: #282a36;
-  --bg-surface-1: #343746;
-  --bg-surface-2: #44475a;
-  --bg-chrome: #21222c;
-  --bg-hover: #44475a;
-  --bg-active: #6272a4;
-  --fg-default: #f8f8f2;
-  --fg-muted: #6272a4;
-  --fg-dim: #44475a;
-  --fg-bright: #ffffff;
-  --ansi-green: #50fa7b;
-  --ansi-cyan: #8be9fd;
-  --ansi-yellow: #f1fa8c;
-  --ansi-red: #ff5555;
-  --ansi-magenta: #ff79c6;
-  --ansi-blue: #bd93f9;
-  --ansi-black: #21222c;
-  --ansi-white: #f8f8f2;
-  --selection-bg: #44475a;
-  --selection-fg: #f8f8f2;
-  --cursor-color: #50fa7b;
-  --border-subtle: #383a59;
-  --border-default: #6272a4;
-  --border-accent: #50fa7b;
-  --border-danger: #ff5555;
-  --focus-ring: #8be9fd;
-  --status-bar-bg: #21222c;
-  --status-bar-fg: #f8f8f2;
-  --status-tag-bg: #44475a;
-}
-
-/* Nord Theme Variant */
-[data-theme="nord"] {
-  --theme-name: "Nord";
-  --bg-app: #2e3440;
-  --bg-surface-1: #3b4252;
-  --bg-surface-2: #434c5e;
-  --bg-chrome: #242933;
-  --bg-hover: #4c566a;
-  --bg-active: #4c566a;
-  --fg-default: #eceff4;
-  --fg-muted: #d8dee9;
-  --fg-dim: #4c566a;
-  --fg-bright: #ffffff;
-  --ansi-green: #a3be8c;
-  --ansi-cyan: #88c0d0;
-  --ansi-yellow: #ebcb8b;
-  --ansi-red: #bf616a;
-  --ansi-magenta: #b48ead;
-  --ansi-blue: #81a1c1;
-  --ansi-black: #242933;
-  --ansi-white: #eceff4;
-  --selection-bg: #434c5e;
-  --selection-fg: #eceff4;
-  --cursor-color: #88c0d0;
-  --border-subtle: #3b4252;
-  --border-default: #4c566a;
-  --border-accent: #a3be8c;
-  --border-danger: #bf616a;
-  --focus-ring: #88c0d0;
-  --status-bar-bg: #242933;
-  --status-bar-fg: #eceff4;
-  --status-tag-bg: #434c5e;
-}
-
-/* Gruvbox Dark Variant */
-[data-theme="gruvbox"] {
-  --theme-name: "Gruvbox";
-  --bg-app: #1d2021;
-  --bg-surface-1: #282828;
-  --bg-surface-2: #32302f;
-  --bg-chrome: #141617;
-  --bg-hover: #3c3836;
-  --bg-active: #504945;
-  --fg-default: #ebdbb2;
-  --fg-muted: #a89984;
-  --fg-dim: #665c54;
-  --fg-bright: #fbf1c7;
-  --ansi-green: #b8bb26;
-  --ansi-cyan: #83a598;
-  --ansi-yellow: #fabd2f;
-  --ansi-red: #fb4934;
-  --ansi-magenta: #d3869b;
-  --ansi-blue: #83a598;
-  --ansi-black: #282828;
-  --ansi-white: #ebdbb2;
-  --selection-bg: #504945;
-  --selection-fg: #fbf1c7;
-  --cursor-color: #fabd2f;
-  --border-subtle: #3c3836;
-  --border-default: #504945;
-  --border-accent: #b8bb26;
-  --border-danger: #fb4934;
-  --focus-ring: #83a598;
-  --status-bar-bg: #141617;
-  --status-bar-fg: #ebdbb2;
-  --status-tag-bg: #32302f;
-}
-
-/* Tokyo Night Variant */
-[data-theme="tokyo-night"] {
-  --theme-name: "Tokyo Night";
-  --bg-app: #1a1b26;
-  --bg-surface-1: #1f2335;
-  --bg-surface-2: #24283b;
-  --bg-chrome: #16161e;
-  --bg-hover: #292e42;
-  --bg-active: #3b4261;
-  --fg-default: #c0caf5;
-  --fg-muted: #565f89;
-  --fg-dim: #414868;
-  --fg-bright: #ffffff;
-  --ansi-green: #9ece6a;
-  --ansi-cyan: #7dcfff;
-  --ansi-yellow: #e0af68;
-  --ansi-red: #f7768e;
-  --ansi-magenta: #bb9af7;
-  --ansi-blue: #7aa2f7;
-  --ansi-black: #15161e;
-  --ansi-white: #c0caf5;
-  --selection-bg: #283457;
-  --selection-fg: #c0caf5;
-  --cursor-color: #7dcfff;
-  --border-subtle: #292e42;
-  --border-default: #414868;
-  --border-accent: #9ece6a;
-  --border-danger: #f7768e;
-  --focus-ring: #7aa2f7;
-  --status-bar-bg: #16161e;
-  --status-bar-fg: #c0caf5;
-  --status-tag-bg: #24283b;
-}
-
-/* Catppuccin Mocha Variant */
-[data-theme="catppuccin"] {
-  --theme-name: "Catppuccin Mocha";
-  --bg-app: #181825;
-  --bg-surface-1: #1e1e2e;
-  --bg-surface-2: #313244;
-  --bg-chrome: #11111b;
-  --bg-hover: #45475a;
-  --bg-active: #585b70;
-  --fg-default: #cdd6f4;
-  --fg-muted: #7f849c;
-  --fg-dim: #585b70;
-  --fg-bright: #ffffff;
-  --ansi-green: #a6e3a1;
-  --ansi-cyan: #89dceb;
-  --ansi-yellow: #f9e2af;
-  --ansi-red: #f38ba8;
-  --ansi-magenta: #cba6f7;
-  --ansi-blue: #89b4fa;
-  --ansi-black: #181825;
-  --ansi-white: #cdd6f4;
-  --selection-bg: #45475a;
-  --selection-fg: #cdd6f4;
-  --cursor-color: #a6e3a1;
-  --border-subtle: #313244;
-  --border-default: #45475a;
-  --border-accent: #a6e3a1;
-  --border-danger: #f38ba8;
-  --focus-ring: #89b4fa;
-  --status-bar-bg: #11111b;
-  --status-bar-fg: #cdd6f4;
-  --status-tag-bg: #313244;
-}
-
 /* --------------------------------------------------------------------------
-   2. TYPOGRAPHY & RESET
+   2. TYPOGRAPHY & RESET (100% Fullscreen Layout)
    -------------------------------------------------------------------------- */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -285,20 +115,23 @@
   color: var(--selection-fg);
 }
 
-body {
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
   background-color: var(--bg-app);
   color: var(--fg-default);
   font-family: 'JetBrains Mono', 'Fira Code', 'IBM Plex Mono', monospace;
   font-feature-settings: "liga" 1, "calt" 1;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.55;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  padding-bottom: 28px; /* Room for fixed status bar */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Optional Scanline Effect (≤ 3% opacity) */
+/* Scanline Effect (Toggleable) */
 .scanline-overlay {
   position: fixed;
   top: 0;
@@ -320,43 +153,54 @@ body {
   display: none;
 }
 
-/* Optional subtle text glow (toggleable) */
-.text-glow-enabled .glow-accent {
-  text-shadow: 0 0 4px currentColor;
-}
-
 /* --------------------------------------------------------------------------
-   3. WINDOW CHROME & LAYOUT
+   3. FULLSCREEN WINDOW CONTAINER & CHROME
    -------------------------------------------------------------------------- */
 .window-container {
-  max-width: 1200px;
-  margin: 16px auto;
-  padding: 0 16px;
-}
-
-.terminal-window-frame {
-  background-color: var(--bg-surface-1);
-  border: 1px solid var(--border-default);
-  border-radius: 8px;
+  width: 100vw;
+  height: calc(100vh - 28px);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-/* Top Window Chrome */
+.terminal-window-frame {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: none;
+  border-radius: 0;
+  background-color: var(--bg-surface-1);
+  overflow: hidden;
+}
+
+/* Top Window Chrome (Edge-to-Edge) */
 .window-chrome {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: var(--bg-chrome);
   border-bottom: 1px solid var(--border-subtle);
-  padding: 0 12px;
-  height: 38px;
+  padding: 0 14px;
+  height: 40px;
+  min-height: 40px;
   user-select: none;
+}
+
+.chrome-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+  overflow: hidden;
 }
 
 .chrome-dots {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-right: 16px;
 }
 
 .dot-glyph {
@@ -374,7 +218,6 @@ body {
   align-items: center;
   gap: 2px;
   overflow-x: auto;
-  flex: 1;
 }
 
 .terminal-tab {
@@ -410,11 +253,16 @@ body {
   outline-offset: -1px;
 }
 
+.chrome-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .chrome-title {
   font-size: 12px;
   color: var(--fg-muted);
   white-space: nowrap;
-  margin-left: 12px;
 }
 
 /* Breadcrumb & Path Bar */
@@ -422,11 +270,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 16px;
+  padding: 6px 18px;
   background-color: var(--bg-surface-2);
   border-bottom: 1px solid var(--border-subtle);
   font-size: 12px;
   color: var(--fg-muted);
+  min-height: 32px;
 }
 
 .breadcrumb-path {
@@ -448,12 +297,12 @@ body {
   font-size: 11px;
 }
 
-/* Boot Line / Hero Section */
+/* Hero / Boot Line */
 .hero-boot-line {
-  padding: 14px 16px 8px 16px;
+  padding: 8px 18px;
   background-color: var(--bg-surface-1);
   border-bottom: 1px solid var(--border-subtle);
-  font-size: 13px;
+  font-size: 12.5px;
   color: var(--fg-muted);
 }
 
@@ -481,10 +330,12 @@ body {
 }
 
 /* --------------------------------------------------------------------------
-   4. CONTENT PANES & SECTIONS
+   4. FULLSCREEN CONTENT BODY & PANES
    -------------------------------------------------------------------------- */
 .terminal-body {
-  padding: 16px;
+  flex: 1;
+  overflow-y: auto;
+  padding: 18px 24px 30px 24px;
 }
 
 .tab-pane {
@@ -501,14 +352,14 @@ body {
   to { opacity: 1; }
 }
 
-/* Bordered Pane with Embedded Title Label */
+/* Bordered Panes with Embedded Top Labels */
 .pane-card {
   position: relative;
   background-color: var(--bg-surface-1);
   border: 1px solid var(--border-default);
-  border-radius: 6px;
-  padding: 20px 16px 16px 16px;
-  margin-bottom: 16px;
+  border-radius: 4px;
+  padding: 20px 18px 18px 18px;
+  margin-bottom: 18px;
 }
 
 .pane-label {
@@ -531,6 +382,10 @@ body {
   color: var(--ansi-green);
 }
 
+.pane-label.label-magenta {
+  color: var(--ansi-magenta);
+}
+
 /* Shell Headings */
 .heading-shell {
   font-size: 16px;
@@ -543,14 +398,117 @@ body {
 }
 
 .heading-subshell {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   color: var(--ansi-magenta);
-  margin: 12px 0 6px 0;
+  margin: 14px 0 6px 0;
 }
 
 /* --------------------------------------------------------------------------
-   5. REUSABLE COMPONENTS
+   5. HOME PAGE SPECIFIC STYLES
+   -------------------------------------------------------------------------- */
+.home-ascii-banner {
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-subtle);
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 4px;
+}
+
+.home-ascii-banner pre {
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.3;
+  color: var(--ansi-green);
+  overflow-x: auto;
+}
+
+/* Telemetry 4-Column Stat Grid */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.telemetry-cell {
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-default);
+  padding: 12px 14px;
+  border-radius: 4px;
+}
+
+.telemetry-title {
+  font-size: 11px;
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.telemetry-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg-bright);
+}
+
+.telemetry-sub {
+  font-size: 11px;
+  color: var(--ansi-cyan);
+  margin-top: 2px;
+}
+
+/* Home Quick Action Cards Grid */
+.home-actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.action-card {
+  position: relative;
+  background-color: var(--bg-surface-1);
+  border: 1px solid var(--border-default);
+  padding: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 100ms ease;
+}
+
+.action-card:hover {
+  background-color: var(--bg-hover);
+  border-color: var(--ansi-green);
+}
+
+.action-card.card-danger:hover {
+  border-color: var(--ansi-red);
+}
+
+.action-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.action-card-title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ansi-blue);
+}
+
+.action-card.card-danger .action-card-title {
+  color: var(--ansi-red);
+}
+
+.action-card-desc {
+  font-size: 12px;
+  color: var(--fg-muted);
+  line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   6. REUSABLE COMPONENTS
    -------------------------------------------------------------------------- */
 
 /* Buttons as Bracketed Commands */
@@ -561,13 +519,14 @@ body {
   color: var(--fg-default);
   border: 1px solid var(--border-default);
   font-family: inherit;
-  font-size: 13px;
-  padding: 6px 14px;
+  font-size: 12.5px;
+  padding: 5px 12px;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
   transition: all 80ms ease;
   line-height: 1.4;
+  border-radius: 2px;
 }
 
 .btn-cmd:hover {
@@ -586,7 +545,6 @@ body {
   color: var(--bg-app);
 }
 
-/* Button Variants */
 .btn-cmd.btn-accent {
   color: var(--ansi-green);
   border-color: var(--ansi-green);
@@ -617,22 +575,18 @@ body {
   color: var(--bg-app);
 }
 
-/* Links with Dotted Underline */
-a.term-link {
-  color: var(--ansi-cyan);
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  transition: text-decoration 80ms ease;
+/* Theme Toggle Button Specifics */
+.btn-theme-toggle {
+  color: var(--ansi-yellow);
+  border-color: var(--border-default);
+  font-size: 11.5px;
+  padding: 4px 10px;
 }
 
-a.term-link:hover {
-  text-decoration: underline solid;
-  color: var(--ansi-blue);
-}
-
-a.term-link:focus-visible {
-  outline: 1px solid var(--focus-ring);
-  outline-offset: 2px;
+.btn-theme-toggle:hover {
+  background-color: var(--ansi-yellow);
+  color: var(--bg-app);
+  border-color: var(--ansi-yellow);
 }
 
 /* Prompt Line Inputs */
@@ -643,6 +597,7 @@ a.term-link:focus-visible {
   border: 1px solid var(--border-default);
   padding: 6px 12px;
   margin: 10px 0;
+  border-radius: 2px;
 }
 
 .prompt-row:focus-within {
@@ -672,7 +627,7 @@ a.term-link:focus-visible {
   border: none;
   color: var(--fg-default);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13.5px;
   outline: none;
   width: 100%;
 }
@@ -681,7 +636,7 @@ a.term-link:focus-visible {
   color: var(--fg-dim);
 }
 
-/* Preset Action Tags / Badges: [tag] */
+/* Preset Action Tags: [tag] */
 .preset-tag-list {
   display: flex;
   align-items: center;
@@ -704,6 +659,7 @@ a.term-link:focus-visible {
   padding: 2px 8px;
   cursor: pointer;
   user-select: none;
+  border-radius: 2px;
 }
 
 .term-tag:hover {
@@ -727,13 +683,14 @@ a.term-link:focus-visible {
   border-color: rgba(63, 185, 80, 0.4);
 }
 
-/* Alerts / Toasts prefixed with [ OK ], [WARN], [FAIL] */
+/* Alerts / Toasts */
 .term-alert {
   padding: 10px 14px;
   border: 1px solid var(--border-default);
   margin: 10px 0;
   font-size: 13px;
   background-color: var(--bg-surface-2);
+  border-radius: 2px;
 }
 
 .term-alert.alert-ok {
@@ -766,7 +723,7 @@ a.term-link:focus-visible {
   margin-right: 8px;
 }
 
-/* ASCII Progress Bar: [█████░░░░░] 50% */
+/* ASCII Progress Bar */
 .progress-bar-term {
   font-family: inherit;
   color: var(--ansi-red);
@@ -775,17 +732,17 @@ a.term-link:focus-visible {
   margin: 6px 0;
 }
 
-/* Terminal Console Box / Code Block */
+/* Terminal Console Box */
 .term-console {
   background-color: var(--bg-app);
   border: 1px solid var(--border-subtle);
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 14px;
   font-size: 13px;
   line-height: 1.6;
   white-space: pre-wrap;
   word-break: break-word;
-  max-height: 500px;
+  max-height: 520px;
   overflow-y: auto;
 }
 
@@ -819,21 +776,8 @@ a.term-link:focus-visible {
   background-color: var(--bg-hover);
 }
 
-/* Split Pane Layout (Desktop) */
-.split-pane-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-}
-
-@media (min-width: 860px) {
-  .split-pane-grid {
-    grid-template-columns: 1.1fr 0.9fr;
-  }
-}
-
 /* --------------------------------------------------------------------------
-   6. COMMAND PALETTE & MODALS (Ctrl+K, ?)
+   7. MODALS (Ctrl+K & ?)
    -------------------------------------------------------------------------- */
 .modal-overlay {
   position: fixed;
@@ -854,11 +798,11 @@ a.term-link:focus-visible {
 }
 
 .palette-box {
-  width: 580px;
-  max-width: 90vw;
+  width: 600px;
+  max-width: 92vw;
   background-color: var(--bg-surface-1);
   border: 1px solid var(--border-default);
-  border-radius: 6px;
+  border-radius: 4px;
   overflow: hidden;
 }
 
@@ -880,13 +824,13 @@ a.term-link:focus-visible {
   border: none;
   color: var(--fg-default);
   font-family: inherit;
-  font-size: 14px;
+  font-size: 13.5px;
   outline: none;
 }
 
 .palette-list {
   list-style: none;
-  max-height: 280px;
+  max-height: 320px;
   overflow-y: auto;
   padding: 6px 0;
 }
@@ -918,32 +862,32 @@ a.term-link:focus-visible {
 }
 
 .shortcuts-table td {
-  padding: 4px 8px;
+  padding: 6px 10px;
 }
 
 .kbd-key {
   border: 1px solid var(--border-default);
   padding: 1px 6px;
-  border-radius: 3px;
+  border-radius: 2px;
   color: var(--ansi-cyan);
 }
 
 /* --------------------------------------------------------------------------
-   7. STATUS BAR (Vim/Tmux Style Fixed Bottom)
+   8. FIXED STATUS BAR (Vim/Tmux Style)
    -------------------------------------------------------------------------- */
 .term-status-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100vw;
-  height: 26px;
+  height: 28px;
   background-color: var(--status-bar-bg);
   border-top: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 10px;
-  font-size: 11px;
+  padding: 0 12px;
+  font-size: 11.5px;
   color: var(--status-bar-fg);
   z-index: 999;
   user-select: none;
@@ -990,23 +934,10 @@ a.term-link:focus-visible {
 }
 
 /* --------------------------------------------------------------------------
-   8. RESPONSIVE ADJUSTMENTS & ACCESSIBILITY
+   9. RESPONSIVE
    -------------------------------------------------------------------------- */
-@media (max-width: 680px) {
+@media (max-width: 768px) {
   .chrome-title { display: none; }
   .tab-strip { overflow-x: scroll; }
   .status-cluster-right .status-segment:not(:last-child) { display: none; }
-}
-
-@media (max-width: 480px) {
-  .btn-cmd { padding: 4px 10px; font-size: 12px; }
-  .heading-shell { font-size: 14px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }
