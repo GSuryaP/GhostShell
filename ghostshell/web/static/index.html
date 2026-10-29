@@ -85,17 +85,39 @@
         <!-- TAB ~: HOME PAGE (DASHBOARD & OVERVIEW) -->
         <section class="tab-pane active" id="tabHome" aria-labelledby="tabBtnHome">
           
-          <!-- ASCII Art Banner -->
-          <div class="home-ascii-banner">
-            <pre>
-        .-.
-       (o.o)     GHOSTSHELL // SYSTEM OVERVIEW &amp; DASHBOARD
-        |=|      The Spooky, AI-Powered Linux Terminal Companion
-       __|__     Hacktoberfest 2026: Ghost in the Machine
-     //.=|=.\\   100% Offline • Local Gemma 2 (2B) • Non-Invasive Safety
-    // .=|=. \\
-    \\ .=|=. //  "Fear not, mortal, for I am Specter...
-     \\(_=_)//    haunting your terminal since the UNIX Epoch (1970)."</pre>
+          <!-- Encrypted Visual Representation & Cyber Cipher Terminal HUD -->
+          <div class="home-encrypted-banner" id="homeEncryptedBanner">
+            <div class="encrypted-emblem-box">
+              <div class="emblem-corner-tag">┌─ [ 0x7F_SPECTER ] ─┐</div>
+              <img src="/static/ghost_encrypted_emblem.jpg" alt="GhostShell Encrypted Terminal Cyber Ghost" class="encrypted-emblem-img" id="ghostEmblemImg">
+              <div class="encrypted-badge-label">
+                <span class="pulse-cipher-dot" aria-hidden="true">●</span>
+                <span>CIPHER: AES-256-GCM</span>
+              </div>
+            </div>
+
+            <div class="encrypted-cipher-block">
+              <div class="cipher-hud-header">
+                <span class="cipher-hud-title">┌─ [ LIVE_POSIX_CRYPT_STREAM // AIR-GAPPED_MEMORY ] ─┐</span>
+                <div class="cipher-hud-actions">
+                  <button type="button" class="btn-cipher-action" id="btnCycleCipher" title="Cycle cryptographic entropy">[ ⟳ CYCLE ENTROPY ]</button>
+                  <button type="button" class="btn-cipher-action" id="btnCopyCipherHash" title="Copy SHA256 integrity hash">[ 📋 COPY HASH ]</button>
+                </div>
+              </div>
+
+              <div class="cipher-hex-stream" id="cipherHexStream">
+                <span style="color: var(--ansi-magenta);">0x0000:</span> 53 50 45 43 54 45 52 00  7F 45 4C 46 02 01 01 00  |SPECTER..ELF....| <span style="color: var(--ansi-cyan);">[AES-256-GCM]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0010:</span> 47 68 6F 73 74 53 68 65  6C 6C 32 30 32 36 21 00  |GhostShell2026!.| <span style="color: var(--ansi-green);">[SHA256:VERIFIED]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0020:</span> 01 00 3E 00 01 00 00 00  B0 0F 40 00 00 00 00 00  |..&gt;.......@.....| <span style="color: var(--ansi-yellow);" id="liveEntropyBadge">[ENTROPY:99.98%]</span><br>
+                <span style="color: var(--ansi-magenta);">0x0030:</span> 4F 46 46 4C 49 4E 45 00  47 45 4D 4D 41 32 2D 32  |OFFLINE.GEMMA2-2| <span style="color: var(--ansi-blue);">[AIR-GAPPED:OK]</span>
+              </div>
+              
+              <div class="cipher-banner-meta">
+                <div class="cipher-title">GHOSTSHELL // ENCRYPTED TERMINAL GUARDIAN</div>
+                <div class="cipher-subtitle">Hacktoberfest 2026 DEV Challenge: Ghost in the Machine • 100% Offline Local AI</div>
+                <div class="cipher-quote">"Fear not, mortal... Trapped in POSIX memory since the UNIX Epoch (1970). Guardian shield active."</div>
+              </div>
+            </div>
           </div>
 
           <!-- Telemetry 4-Column Stat Grid -->

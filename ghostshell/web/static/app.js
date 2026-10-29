@@ -226,6 +226,50 @@ function initHomeDashboard() {
       }
     });
   }
+
+  // Live Cryptographic Entropy Stream (Encrypted Representation Flicker)
+  const cipherEl = document.getElementById("cipherHexStream");
+  const cycleBtn = document.getElementById("btnCycleCipher");
+  const copyBtn = document.getElementById("btnCopyCipherHash");
+  const entropyBadge = document.getElementById("liveEntropyBadge");
+
+  function cycleEntropyNow() {
+    if (!cipherEl) return;
+    const hexChars = "0123456789ABCDEF";
+    let randHex = "";
+    for (let i = 0; i < 4; i++) {
+      randHex += hexChars[Math.floor(Math.random() * 16)];
+    }
+    const percent = (99.8 + Math.random() * 0.19).toFixed(2);
+    if (entropyBadge) {
+      entropyBadge.textContent = `[ENTROPY:${percent}% 0x${randHex}]`;
+    }
+  }
+
+  if (cycleBtn) {
+    cycleBtn.addEventListener("click", () => {
+      cycleEntropyNow();
+      cycleBtn.textContent = "[ ⟳ CYCLED! ]";
+      setTimeout(() => {
+        cycleBtn.textContent = "[ ⟳ CYCLE ENTROPY ]";
+      }, 1200);
+    });
+  }
+
+  if (copyBtn) {
+    copyBtn.addEventListener("click", () => {
+      const hash = "sha256:7f454c460201010047686f73745368656c6c323032362100";
+      navigator.clipboard?.writeText(hash).catch(() => {});
+      copyBtn.textContent = "[ ✓ COPIED! ]";
+      setTimeout(() => {
+        copyBtn.textContent = "[ 📋 COPY HASH ]";
+      }, 1500);
+    });
+  }
+
+  if (cipherEl) {
+    setInterval(cycleEntropyNow, 2200);
+  }
 }
 
 /* ==========================================================================
