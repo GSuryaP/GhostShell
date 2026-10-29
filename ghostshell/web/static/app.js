@@ -150,13 +150,16 @@ function applyTheme(themeName) {
 
   const btnHeader = document.getElementById("btnThemeToggle");
   const btnStatus = document.getElementById("btnToggleThemeStatus");
+  const emblemCipherLabel = document.getElementById("emblemCipherLabel");
 
   if (themeName === "light") {
     if (btnHeader) btnHeader.textContent = "[ ☾ DARK ]";
     if (btnStatus) btnStatus.textContent = "[mode: light]";
+    if (emblemCipherLabel) emblemCipherLabel.textContent = "CIPHER: MATRIX_LIGHT";
   } else {
     if (btnHeader) btnHeader.textContent = "[ ☼ LIGHT ]";
     if (btnStatus) btnStatus.textContent = "[mode: dark]";
+    if (emblemCipherLabel) emblemCipherLabel.textContent = "CIPHER: MATRIX_DARK";
   }
 }
 
