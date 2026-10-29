@@ -1,158 +1,364 @@
 /**
- * GhostShell Web UI - Interactive Frontend Logic
- * Hacktoberfest 2026: Ghost in the Machine
+ * GhostShell Terminal Emulator Frontend
+ * Theme: Warp / Ghostty / iTerm2 Inspired (WCAG AA • ANSI Semantics)
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  initSpectralCanvas();
+  initTypewriter();
   initTabs();
-  initPresets();
+  initClock();
+  initThemeEngine();
+  initScanlineToggle();
+  initCommandPalette();
+  initShortcutsModal();
   initGhostMode();
   initPossessionAlert();
   initHauntedLogs();
-  initAskGhost();
+  initOracleChat();
   initLedger();
   fetchSystemStatus();
+  initGlobalKeyboard();
 });
 
 /* ==========================================================================
-   1. Ambient Floating Ghost Particles Canvas
+   1. Typewriter Effect (Hero line, skippable, under 1.2s)
    ========================================================================== */
-function initSpectralCanvas() {
-  const canvas = document.getElementById("spectralCanvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+function initTypewriter() {
+  const container = document.getElementById("heroBootLine");
+  const textEl = document.getElementById("typewriterText");
+  if (!textEl) return;
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
+  const fullText = textEl.textContent.trim();
+  textEl.textContent = "";
 
-  window.addEventListener("resize", () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  });
+  let idx = 0;
+  let isSkipped = false;
 
-  const particles = [];
-  const particleCount = 28;
-
-  for (let i = 0; i < particleCount; i++) {
-    particles.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 2.8 + 1,
-      speedY: Math.random() * 0.4 + 0.1,
-      speedX: (Math.random() - 0.5) * 0.3,
-      alpha: Math.random() * 0.4 + 0.1,
-      color: Math.random() > 0.5 ? "rgba(0, 255, 135," : "rgba(96, 239, 255,",
-    });
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    for (let p of particles) {
-      p.y -= p.speedY;
-      p.x += p.speedX;
-
-      if (p.y < -10) {
-        p.y = height + 10;
-        p.x = Math.random() * width;
-      }
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fillStyle = `${p.color} ${p.alpha})`;
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = "#00ff87";
-      ctx.fill();
+  function typeChar() {
+    if (isSkipped) return;
+    if (idx < fullText.length) {
+      textEl.textContent += fullText.charAt(idx);
+      idx++;
+      setTimeout(typeChar, 18);
     }
-    requestAnimationFrame(animate);
   }
 
-  animate();
+  function skipTypewriter() {
+    if (!isSkipped) {
+      isSkipped = true;
+      textEl.textContent = fullText;
+    }
+  }
+
+  if (container) {
+    container.addEventListener("click", skipTypewriter);
+  }
+
+  typeChar();
 }
 
 /* ==========================================================================
-   2. Tab Navigation
+   2. Tab Navigation & Breadcrumbs
    ========================================================================== */
 function initTabs() {
-  const tabs = document.querySelectorAll(".nav-tab");
-  const panels = document.querySelectorAll(".tab-panel");
+  const tabs = document.querySelectorAll(".terminal-tab");
+  const panes = document.querySelectorAll(".tab-pane");
+  const breadcrumbCurrent = document.getElementById("breadcrumbCurrent");
+  const statusSection = document.getElementById("statusCurrentSection");
+  const chromeTitle = document.getElementById("chromeTitleLabel");
 
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
+      const targetId = tab.dataset.tab;
+      const path = tab.dataset.path || "~/ghostshell";
+
       tabs.forEach((t) => t.classList.remove("active"));
-      panels.forEach((p) => p.classList.remove("active"));
+      panes.forEach((p) => p.classList.remove("active"));
 
       tab.classList.add("active");
-      const targetPanel = document.getElementById(tab.dataset.tab);
-      if (targetPanel) {
-        targetPanel.classList.add("active");
-      }
+      const targetPane = document.getElementById(targetId);
+      if (targetPane) targetPane.classList.add("active");
 
-      if (tab.dataset.tab === "tabLedger") {
+      // Update path labels
+      const pathSuffix = path.split("/").pop();
+      if (breadcrumbCurrent) breadcrumbCurrent.textContent = pathSuffix;
+      if (statusSection) statusSection.textContent = path;
+      if (chromeTitle) chromeTitle.textContent = `ghost@crypt: ${path}`;
+
+      if (targetId === "tabLedger") {
         loadLedgerRecords();
       }
     });
   });
 }
 
+function switchTabByIndex(index) {
+  const tabs = document.querySelectorAll(".terminal-tab");
+  if (tabs[index]) {
+    tabs[index].click();
+  }
+}
+
 /* ==========================================================================
-   3. Quick Presets
+   3. Status Bar Clock
    ========================================================================== */
-function initPresets() {
-  const presetPills = document.querySelectorAll(".preset-pill");
-  presetPills.forEach((pill) => {
-    pill.addEventListener("click", () => {
-      const targetInputId = pill.dataset.target;
-      const cmd = pill.dataset.cmd;
-      const targetInput = document.getElementById(targetInputId);
-      if (targetInput) {
-        targetInput.value = cmd;
-        targetInput.focus();
-      }
+function initClock() {
+  const clockEl = document.getElementById("statusClock");
+  function updateTime() {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    if (clockEl) clockEl.textContent = `${hours}:${minutes}`;
+  }
+  updateTime();
+  setInterval(updateTime, 1000);
+}
+
+/* ==========================================================================
+   4. Theme Palette Engine (Dracula, Nord, Gruvbox, Tokyo Night, Catppuccin)
+   ========================================================================== */
+const THEMES = ["dark", "light", "dracula", "nord", "gruvbox", "tokyo-night", "catppuccin"];
+
+function initThemeEngine() {
+  const savedTheme = localStorage.getItem("ghostshell_theme") || "dark";
+  applyTheme(savedTheme);
+
+  const cycleBtn = document.getElementById("btnCycleTheme");
+  if (cycleBtn) {
+    cycleBtn.addEventListener("click", () => {
+      const current = document.documentElement.getAttribute("data-theme") || "dark";
+      const nextIdx = (THEMES.indexOf(current) + 1) % THEMES.length;
+      applyTheme(THEMES[nextIdx]);
     });
+  }
+}
+
+function applyTheme(themeName) {
+  document.documentElement.setAttribute("data-theme", themeName);
+  localStorage.setItem("ghostshell_theme", themeName);
+
+  const cycleBtn = document.getElementById("btnCycleTheme");
+  if (cycleBtn) {
+    cycleBtn.textContent = `[theme: ${themeName}]`;
+  }
+}
+
+/* ==========================================================================
+   5. Scanline Overlay Toggle
+   ========================================================================== */
+function initScanlineToggle() {
+  const scanline = document.getElementById("scanlineOverlay");
+  const toggleBtn = document.getElementById("btnToggleScanlines");
+  const savedState = localStorage.getItem("ghostshell_scanlines");
+
+  if (savedState === "disabled" && scanline) {
+    scanline.classList.add("disabled");
+    if (toggleBtn) toggleBtn.textContent = "[scanlines: off]";
+  }
+
+  if (toggleBtn && scanline) {
+    toggleBtn.addEventListener("click", () => {
+      scanline.classList.toggle("disabled");
+      const isOff = scanline.classList.contains("disabled");
+      toggleBtn.textContent = isOff ? "[scanlines: off]" : "[scanlines: on]";
+      localStorage.setItem("ghostshell_scanlines", isOff ? "disabled" : "enabled");
+    });
+  }
+}
+
+/* ==========================================================================
+   6. Command Palette (Ctrl+K)
+   ========================================================================== */
+const PALETTE_COMMANDS = [
+  { label: "jump: ghost-mode", action: () => switchTabByIndex(0), hint: "Tab 0" },
+  { label: "jump: possession-alerts", action: () => switchTabByIndex(1), hint: "Tab 1" },
+  { label: "jump: haunted-logs", action: () => switchTabByIndex(2), hint: "Tab 2" },
+  { label: "jump: oracle (ask)", action: () => switchTabByIndex(3), hint: "Tab 3" },
+  { label: "jump: crypt-ledger", action: () => switchTabByIndex(4), hint: "Tab 4" },
+  { label: "theme: Ghostty Dark", action: () => applyTheme("dark"), hint: "Default" },
+  { label: "theme: Terminal Light", action: () => applyTheme("light"), hint: "WCAG Light" },
+  { label: "theme: Dracula", action: () => applyTheme("dracula"), hint: "Purple/Pink" },
+  { label: "theme: Nord", action: () => applyTheme("nord"), hint: "Arctic Blue" },
+  { label: "theme: Gruvbox", action: () => applyTheme("gruvbox"), hint: "Retro Groove" },
+  { label: "theme: Tokyo Night", action: () => applyTheme("tokyo-night"), hint: "Neon Dusk" },
+  { label: "theme: Catppuccin Mocha", action: () => applyTheme("catppuccin"), hint: "Pastel" },
+  { label: "toggle: scanlines", action: () => document.getElementById("btnToggleScanlines")?.click(), hint: "CRT Overlay" },
+  { label: "run: audit rm -rf /", action: () => { switchTabByIndex(1); document.getElementById("alertInput").value = "rm -rf / --no-preserve-root"; document.getElementById("btnScanPossession")?.click(); }, hint: "Lethal Test" },
+  { label: "run: explain tar", action: () => { switchTabByIndex(0); document.getElementById("ghostInput").value = "tar -czvf backup.tar.gz /var/log"; document.getElementById("btnSummonGhost")?.click(); }, hint: "Ghost Mode" },
+  { label: "help: keyboard shortcuts", action: () => openShortcutsModal(), hint: "Key cheat sheet" },
+];
+
+function initCommandPalette() {
+  const modal = document.getElementById("paletteModal");
+  const input = document.getElementById("paletteSearchInput");
+  const list = document.getElementById("paletteResultsList");
+  const openBtn = document.getElementById("btnOpenPalette");
+
+  if (!modal || !input || !list) return;
+
+  let selectedIdx = 0;
+  let filteredCommands = [...PALETTE_COMMANDS];
+
+  function renderList() {
+    list.innerHTML = "";
+    if (filteredCommands.length === 0) {
+      list.innerHTML = `<li class="palette-item" style="color: var(--fg-muted);">No matching commands found.</li>`;
+      return;
+    }
+
+    filteredCommands.forEach((cmd, idx) => {
+      const li = document.createElement("li");
+      li.className = `palette-item ${idx === selectedIdx ? "selected" : ""}`;
+      li.innerHTML = `
+        <span><span style="color: var(--ansi-green); margin-right: 6px;">❯</span>${escapeHtml(cmd.label)}</span>
+        <span class="palette-hint">${escapeHtml(cmd.hint || "")}</span>
+      `;
+      li.addEventListener("click", () => {
+        cmd.action();
+        closePalette();
+      });
+      list.appendChild(li);
+    });
+  }
+
+  function openPalette() {
+    modal.classList.remove("hidden");
+    input.value = "";
+    filteredCommands = [...PALETTE_COMMANDS];
+    selectedIdx = 0;
+    renderList();
+    setTimeout(() => input.focus(), 50);
+  }
+
+  function closePalette() {
+    modal.classList.add("hidden");
+  }
+
+  if (openBtn) openBtn.addEventListener("click", openPalette);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closePalette();
+  });
+
+  input.addEventListener("input", () => {
+    const q = input.value.toLowerCase().trim();
+    filteredCommands = PALETTE_COMMANDS.filter((cmd) => cmd.label.toLowerCase().includes(q) || cmd.hint.toLowerCase().includes(q));
+    selectedIdx = 0;
+    renderList();
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown" || (e.ctrlKey && e.key === "n")) {
+      e.preventDefault();
+      selectedIdx = (selectedIdx + 1) % filteredCommands.length;
+      renderList();
+    } else if (e.key === "ArrowUp" || (e.ctrlKey && e.key === "p")) {
+      e.preventDefault();
+      selectedIdx = (selectedIdx - 1 + filteredCommands.length) % filteredCommands.length;
+      renderList();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (filteredCommands[selectedIdx]) {
+        filteredCommands[selectedIdx].action();
+        closePalette();
+      }
+    } else if (e.key === "Escape") {
+      closePalette();
+    }
+  });
+
+  window.openPalette = openPalette;
+  window.closePalette = closePalette;
+}
+
+/* ==========================================================================
+   7. Keyboard Shortcuts Modal (?)
+   ========================================================================== */
+function initShortcutsModal() {
+  const modal = document.getElementById("shortcutsModal");
+  const openBtn = document.getElementById("btnOpenShortcuts");
+  const closeBtn = document.getElementById("btnCloseShortcuts");
+
+  if (!modal) return;
+
+  function openShortcuts() { modal.classList.remove("hidden"); }
+  function closeShortcuts() { modal.classList.add("hidden"); }
+
+  if (openBtn) openBtn.addEventListener("click", openShortcuts);
+  if (closeBtn) closeBtn.addEventListener("click", closeShortcuts);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeShortcuts();
+  });
+
+  window.openShortcutsModal = openShortcuts;
+  window.closeShortcutsModal = closeShortcuts;
+}
+
+/* ==========================================================================
+   8. Global Keyboard Shortcuts Handler
+   ========================================================================== */
+function initGlobalKeyboard() {
+  document.addEventListener("keydown", (e) => {
+    const isInput = ["INPUT", "TEXTAREA"].includes(document.activeElement.tagName);
+
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      window.openPalette ? window.openPalette() : null;
+      return;
+    }
+
+    if (e.key === "Escape") {
+      const palette = document.getElementById("paletteModal");
+      const shortcuts = document.getElementById("shortcutsModal");
+      if (palette && !palette.classList.contains("hidden")) palette.classList.add("hidden");
+      if (shortcuts && !shortcuts.classList.contains("hidden")) shortcuts.classList.add("hidden");
+      return;
+    }
+
+    if (!isInput) {
+      if (e.key === "?") {
+        e.preventDefault();
+        window.openShortcutsModal ? window.openShortcutsModal() : null;
+      } else if (["1", "2", "3", "4", "5"].includes(e.key)) {
+        switchTabByIndex(parseInt(e.key, 10) - 1);
+      } else if (e.key.toLowerCase() === "t") {
+        document.getElementById("btnCycleTheme")?.click();
+      } else if (e.key.toLowerCase() === "s") {
+        document.getElementById("btnToggleScanlines")?.click();
+      }
+    }
   });
 }
 
 /* ==========================================================================
-   4. Loading Overlay Helpers
-   ========================================================================== */
-const spookyPhrases = [
-  "Summoning spirits through the kernel mist...",
-  "Consulting the ancient scrolls of the UNIX Epoch...",
-  "Dissecting the arcane flags and signals...",
-  "Purging digital phantoms from system memory...",
-  "Communing with daemons lurking in /var/log...",
-];
-
-function showLoading(customText = null) {
-  const overlay = document.getElementById("loadingOverlay");
-  const textEl = document.getElementById("loadingSpookyText");
-  const randomPhrase = spookyPhrases[Math.floor(Math.random() * spookyPhrases.length)];
-  textEl.textContent = customText || randomPhrase;
-  overlay.classList.remove("hidden");
-}
-
-function hideLoading() {
-  const overlay = document.getElementById("loadingOverlay");
-  overlay.classList.add("hidden");
-}
-
-/* ==========================================================================
-   5. Ghost Mode Logic
+   9. Ghost Mode (Tab 0)
    ========================================================================== */
 function initGhostMode() {
   const form = document.getElementById("ghostForm");
   const input = document.getElementById("ghostInput");
   const resultArea = document.getElementById("ghostResultArea");
   const resultContent = document.getElementById("ghostResultContent");
+  const btnSubmit = document.getElementById("btnSummonGhost");
   const btnCopy = document.getElementById("btnCopyGhost");
+
+  // Presets click
+  document.querySelectorAll("[data-target='ghostInput']").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      input.value = btn.dataset.cmd;
+      input.focus();
+    });
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const command = input.value.trim();
     if (!command) return;
 
-    showLoading("Summoning the Specter to decipher command...");
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "[ RUNNING... ]";
+    resultArea.style.display = "block";
+    resultContent.textContent = "Summoning local Gemma 2 (2B) via Ollama...";
 
     try {
       const resp = await fetch("/api/ghost", {
@@ -161,48 +367,52 @@ function initGhostMode() {
         body: JSON.stringify({ command }),
       });
 
-      if (!resp.ok) {
-        throw new Error(`Server returned status: ${resp.status}`);
-      }
-
       const data = await resp.json();
-      resultContent.textContent = data.explanation;
-      resultArea.classList.remove("hidden");
-
-      // Auto-scroll to result
-      resultArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      resultContent.textContent = data.explanation || "No output returned.";
     } catch (err) {
-      resultContent.textContent = `Error communing with the ghost: ${err.message}. Ensure Ollama is running.`;
-      resultArea.classList.remove("hidden");
+      resultContent.textContent = `[FAIL] Error communicating with Specter: ${err.message}`;
     } finally {
-      hideLoading();
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = "[ EXPLAIN ]";
     }
   });
 
-  btnCopy.addEventListener("click", () => {
-    navigator.clipboard.writeText(resultContent.textContent);
-    btnCopy.textContent = "Copied! ✨";
-    setTimeout(() => {
-      btnCopy.textContent = "Copy Markdown";
-    }, 2000);
-  });
+  if (btnCopy) {
+    btnCopy.addEventListener("click", () => {
+      navigator.clipboard.writeText(resultContent.textContent);
+      btnCopy.textContent = "[ COPIED! ]";
+      setTimeout(() => { btnCopy.textContent = "[ COPY_OUTPUT ]"; }, 1500);
+    });
+  }
 }
 
 /* ==========================================================================
-   6. Possession Alert Logic
+   10. Possession Alerts (Tab 1)
    ========================================================================== */
 function initPossessionAlert() {
   const form = document.getElementById("alertForm");
   const input = document.getElementById("alertInput");
   const resultArea = document.getElementById("alertResultArea");
-  const cardContainer = document.getElementById("alertCardContainer");
+  const container = document.getElementById("alertCardContainer");
+  const btnSubmit = document.getElementById("btnScanPossession");
+  const statusMode = document.getElementById("statusModeLabel");
+
+  document.querySelectorAll("[data-target='alertInput']").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      input.value = btn.dataset.cmd;
+      input.focus();
+    });
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const command = input.value.trim();
     if (!command) return;
 
-    showLoading("Auditing command against destructive curses...");
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "[ AUDITING... ]";
+    resultArea.style.display = "block";
+    container.innerHTML = `<div class="term-alert alert-warn"><span class="alert-tag">[WAIT]</span>Auditing command AST against lethal heuristics...</div>`;
 
     try {
       const resp = await fetch("/api/alert", {
@@ -211,256 +421,256 @@ function initPossessionAlert() {
         body: JSON.stringify({ command }),
       });
 
-      if (!resp.ok) {
-        throw new Error(`Audit failed: ${resp.status}`);
-      }
-
       const data = await resp.json();
-      cardContainer.innerHTML = "";
+      container.innerHTML = "";
 
       if (data.is_dangerous) {
-        cardContainer.className = "alert-verdict-card verdict-critical";
-        
-        let hazardsListHtml = "";
-        if (data.hazards && data.hazards.length > 0) {
-          hazardsListHtml = `
-            <div class="hazard-box">
-              <h4>☠️ Identified Hazards:</h4>
-              <ul>
-                ${data.hazards.map((h) => `<li>${escapeHtml(h)}</li>`).join("")}
-              </ul>
-            </div>
-          `;
+        if (statusMode) {
+          statusMode.className = "status-mode mode-danger";
+          statusMode.textContent = "POSSESSED";
         }
 
-        let safeAltHtml = "";
-        if (data.safe_alternative) {
-          safeAltHtml = `
-            <div class="safe-alternative-box">
-              <h4>✨ Exorcised Safe Alternative:</h4>
-              <code class="safe-cmd-code">${escapeHtml(data.safe_alternative)}</code>
-            </div>
-          `;
-        }
+        const hazardsList = (data.hazards || [])
+          .map((h) => `<li>${escapeHtml(h)}</li>`)
+          .join("");
 
-        cardContainer.innerHTML = `
-          <div class="verdict-badge badge-critical">
-            <span>☠️ POSSESSION DETECTED (${escapeHtml(data.severity)})</span>
+        container.innerHTML = `
+          <div class="term-alert alert-fail">
+            <span class="alert-tag">[FAIL]</span>
+            <strong>POSSESSION DETECTED // SEVERITY: ${escapeHtml(data.severity)}</strong>
           </div>
-          <div>
-            <strong>Target Command:</strong> <code style="color: #ff2a5f;">${escapeHtml(data.command)}</code>
+
+          <div class="progress-bar-term">
+            THREAT_INDEX: [██████████] 100% FATAL
           </div>
-          ${hazardsListHtml}
-          <div class="spectral-advice-box">
-            <h4>Spectral Warning:</h4>
-            <p style="white-space: pre-wrap; line-height: 1.6;">${escapeHtml(data.warning)}</p>
+
+          <div class="pane-card" style="margin-top: 10px;">
+            <span class="pane-label label-danger">┌─ [ IDENTIFIED_HAZARDS ] ─┐</span>
+            <ul style="padding-left: 20px; font-size: 13px; color: var(--ansi-red); line-height: 1.6;">
+              ${hazardsList}
+            </ul>
           </div>
-          ${safeAltHtml}
+
+          <div class="pane-card" style="margin-top: 10px;">
+            <span class="pane-label">┌─ [ SPECTRAL_WARNING ] ─┐</span>
+            <div class="term-console" style="color: var(--fg-default);">${escapeHtml(data.warning)}</div>
+          </div>
+
+          ${
+            data.safe_alternative
+              ? `
+            <div class="pane-card" style="margin-top: 10px;">
+              <span class="pane-label label-success">┌─ [ EXORCISED_ALTERNATIVE ] ─┐</span>
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                <code style="color: var(--ansi-green); font-size: 13px;">${escapeHtml(data.safe_alternative)}</code>
+                <button class="btn-cmd btn-accent" onclick="navigator.clipboard.writeText('${escapeHtml(data.safe_alternative)}'); this.textContent='[ COPIED ]';">[ COPY ]</button>
+              </div>
+            </div>
+            `
+              : ""
+          }
         `;
       } else {
-        cardContainer.className = "alert-verdict-card verdict-safe";
-        cardContainer.innerHTML = `
-          <div class="verdict-badge badge-clean">
-            <span>✨ CLEAN INCANTATION (SAFE)</span>
+        if (statusMode) {
+          statusMode.className = "status-mode";
+          statusMode.textContent = "NORMAL";
+        }
+
+        container.innerHTML = `
+          <div class="term-alert alert-ok">
+            <span class="alert-tag">[ OK ]</span>
+            <strong>CLEAN INCANTATION // NO DESTRUCTIVE SIGNATURE DETECTED</strong>
           </div>
-          <div>
-            <strong>Audited Command:</strong> <code style="color: #00ff87;">${escapeHtml(data.command)}</code>
+          <div class="progress-bar-term" style="color: var(--ansi-green);">
+            THREAT_INDEX: [░░░░░░░░░░] 0% SAFE
           </div>
-          <div class="spectral-advice-box">
-            <h4>Guardian Audit Verdict:</h4>
-            <p>${escapeHtml(data.warning)}</p>
-          </div>
+          <p style="font-size: 13px; color: var(--fg-muted); margin-top: 6px;">
+            Input command <code>${escapeHtml(data.command)}</code> passed Guardian Layer 1 regex checks and AST tokenization without triggering safety halts.
+          </p>
         `;
       }
-
-      resultArea.classList.remove("hidden");
-      resultArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
     } catch (err) {
-      cardContainer.className = "alert-verdict-card verdict-critical";
-      cardContainer.innerHTML = `<p>Error performing possession audit: ${escapeHtml(err.message)}</p>`;
-      resultArea.classList.remove("hidden");
+      container.innerHTML = `<div class="term-alert alert-fail"><span class="alert-tag">[FAIL]</span>Audit error: ${escapeHtml(err.message)}</div>`;
     } finally {
-      hideLoading();
+      btnSubmit.disabled = false;
+      btnSubmit.textContent = "[ AUDIT ]";
     }
   });
 }
 
 /* ==========================================================================
-   7. Haunted Logs Logic
+   11. Haunted Logs (Tab 2)
    ========================================================================== */
 function initHauntedLogs() {
   const btnFetch = document.getElementById("btnFetchLogs");
-  const linesSelect = document.getElementById("logLinesSelect");
   const resultArea = document.getElementById("logsResultArea");
   const tableBody = document.getElementById("evidenceTableBody");
   const narrativeContent = document.getElementById("logsNarrativeContent");
+  let selectedLines = 15;
+
+  // Depth selection
+  document.querySelectorAll("[data-lines]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll("[data-lines]").forEach((b) => b.classList.remove("active-depth"));
+      btn.classList.add("active-depth");
+      selectedLines = parseInt(btn.dataset.lines, 10);
+    });
+  });
 
   btnFetch.addEventListener("click", async () => {
-    const lines = parseInt(linesSelect.value, 10) || 20;
-    showLoading("Scouring Linux system logs and redacting sensitive identities...");
+    btnFetch.disabled = true;
+    btnFetch.textContent = "[ SCANNING... ]";
+    resultArea.style.display = "block";
+    narrativeContent.textContent = "Harvesting journalctl and redacting IP/secret patterns...";
 
     try {
       const resp = await fetch("/api/logs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ lines }),
+        body: JSON.stringify({ lines: selectedLines }),
       });
 
-      if (!resp.ok) {
-        throw new Error(`Telemetry collection failed: ${resp.status}`);
-      }
-
       const data = await resp.json();
-
-      // Populate evidence table
       tableBody.innerHTML = "";
+
       if (data.extracted_events && data.extracted_events.length > 0) {
         data.extracted_events.forEach((ev) => {
           const row = document.createElement("tr");
+          const isErr = ev.priority === "ERR";
           row.innerHTML = `
-            <td style="color: #8b949e;">${escapeHtml(ev.timestamp || "Recent")}</td>
-            <td style="color: #b266ff;">${escapeHtml(ev.unit || "kernel")}</td>
-            <td style="color: ${ev.priority === "ERR" ? "#ff2a5f" : "#60efff"}; font-weight: bold;">${escapeHtml(ev.priority || "LOG")}</td>
+            <td style="color: var(--fg-muted);">${escapeHtml(ev.timestamp || "")}</td>
+            <td style="color: var(--ansi-magenta);">${escapeHtml(ev.unit || "sys")}</td>
+            <td style="color: ${isErr ? "var(--ansi-red)" : "var(--ansi-green);"} font-weight: bold;">[${escapeHtml(ev.priority)}]</td>
             <td>${escapeHtml(ev.message || "")}</td>
           `;
           tableBody.appendChild(row);
         });
       } else {
-        tableBody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #8b949e;">No anomalous events detected in recent telemetry.</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="4" style="color: var(--fg-muted);">No anomalous journal events in recent range.</td></tr>`;
       }
 
-      // Populate narrative
-      narrativeContent.textContent = data.narrative;
-      resultArea.classList.remove("hidden");
-      resultArea.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      narrativeContent.textContent = data.narrative || "No narrative returned.";
     } catch (err) {
-      alert(`Failed to harvest logs: ${err.message}`);
+      narrativeContent.textContent = `[FAIL] Ingestion failed: ${err.message}`;
     } finally {
-      hideLoading();
+      btnFetch.disabled = false;
+      btnFetch.textContent = "[ COLLECT_AND_NARRATE ]";
     }
   });
 }
 
 /* ==========================================================================
-   8. Ask the Ghost Logic
+   12. Oracle Chat (Tab 3)
    ========================================================================== */
-function initAskGhost() {
+function initOracleChat() {
   const form = document.getElementById("askForm");
   const input = document.getElementById("askInput");
   const chkLogs = document.getElementById("chkIncludeLogs");
-  const historyContainer = document.getElementById("chatHistoryContainer");
+  const container = document.getElementById("chatHistoryContainer");
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const question = input.value.trim();
-    if (!question) return;
+    const q = input.value.trim();
+    if (!q) return;
 
-    // Append user message
-    const userMsg = document.createElement("div");
-    userMsg.className = "chat-message user-message";
-    userMsg.innerHTML = `
-      <div class="chat-avatar">👤</div>
-      <div class="chat-bubble"><p>${escapeHtml(question)}</p></div>
+    // User message
+    const userRow = document.createElement("div");
+    userRow.style.margin = "8px 0";
+    userRow.innerHTML = `
+      <span style="color: var(--ansi-green); font-weight: 600;">❯ user:</span>
+      <span style="color: var(--fg-bright); margin-left: 6px;">${escapeHtml(q)}</span>
     `;
-    historyContainer.appendChild(userMsg);
+    container.appendChild(userRow);
     input.value = "";
-    historyContainer.scrollTop = historyContainer.scrollHeight;
 
-    // Append loading ghost message
-    const ghostLoadingMsg = document.createElement("div");
-    ghostLoadingMsg.className = "chat-message ghost-message";
-    ghostLoadingMsg.innerHTML = `
-      <div class="chat-avatar">👻</div>
-      <div class="chat-bubble"><p class="pulsing-green"><em>Specter is consulting the crypt...</em></p></div>
-    `;
-    historyContainer.appendChild(ghostLoadingMsg);
-    historyContainer.scrollTop = historyContainer.scrollHeight;
+    // Pending Specter reply
+    const pendingMsg = document.createElement("div");
+    pendingMsg.className = "term-alert alert-warn";
+    pendingMsg.innerHTML = `<span class="alert-tag">[WAIT]</span><span>Specter is consulting the Linux kernel crypt...</span>`;
+    container.appendChild(pendingMsg);
+    container.scrollTop = container.scrollHeight;
 
     try {
       const resp = await fetch("/api/ask", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          question,
-          with_logs: chkLogs.checked,
-        }),
+        body: JSON.stringify({ question: q, with_logs: chkLogs.checked }),
       });
 
-      if (!resp.ok) throw new Error(`Query failed: ${resp.status}`);
       const data = await resp.json();
-
-      ghostLoadingMsg.querySelector(".chat-bubble").innerHTML = `<p style="white-space: pre-wrap;">${escapeHtml(data.answer)}</p>`;
+      pendingMsg.className = "pane-card";
+      pendingMsg.style.padding = "12px 16px";
+      pendingMsg.innerHTML = `
+        <span class="pane-label">┌─ [ SPECTER_REPLY ] ─┐</span>
+        <div style="white-space: pre-wrap; font-size: 13px; line-height: 1.6;">${escapeHtml(data.answer)}</div>
+      `;
     } catch (err) {
-      ghostLoadingMsg.querySelector(".chat-bubble").innerHTML = `<p style="color: #ff2a5f;">The spectral connection was severed: ${escapeHtml(err.message)}</p>`;
+      pendingMsg.className = "term-alert alert-fail";
+      pendingMsg.innerHTML = `<span class="alert-tag">[FAIL]</span>${escapeHtml(err.message)}`;
     } finally {
-      historyContainer.scrollTop = historyContainer.scrollHeight;
+      container.scrollTop = container.scrollHeight;
     }
   });
 }
 
 /* ==========================================================================
-   9. Crypt Ledger (History)
+   13. Crypt Ledger (Tab 4)
    ========================================================================== */
 function initLedger() {
   const btnRefresh = document.getElementById("btnRefreshLedger");
-  btnRefresh.addEventListener("click", loadLedgerRecords);
+  if (btnRefresh) {
+    btnRefresh.addEventListener("click", loadLedgerRecords);
+  }
 }
 
 async function loadLedgerRecords() {
-  const tableBody = document.getElementById("ledgerTableBody");
-  tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Loading audit records...</td></tr>`;
+  const tbody = document.getElementById("ledgerTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = `<tr><td colspan="5" style="color: var(--fg-muted);">Querying SQLite history.db...</td></tr>`;
 
   try {
-    const resp = await fetch("/api/history?limit=25");
-    if (!resp.ok) throw new Error(`History fetch failed: ${resp.status}`);
+    const resp = await fetch("/api/history?limit=30");
     const data = await resp.json();
 
-    tableBody.innerHTML = "";
+    tbody.innerHTML = "";
     if (data.history && data.history.length > 0) {
       data.history.forEach((r) => {
         const row = document.createElement("tr");
         const isDang = r.is_dangerous === 1;
         row.innerHTML = `
-          <td>#${r.id}</td>
+          <td style="color: var(--fg-muted);">#${r.id}</td>
           <td><code>${escapeHtml(r.command)}</code></td>
-          <td style="color: #60efff;">${escapeHtml(r.mode)}</td>
-          <td class="${isDang ? "badge-risk-critical" : "badge-risk-clean"}">
-            ${isDang ? `☠️ ${escapeHtml(r.severity)}` : "✨ CLEAN"}
+          <td style="color: var(--ansi-cyan);">[${escapeHtml(r.mode)}]</td>
+          <td style="color: ${isDang ? "var(--ansi-red)" : "var(--ansi-green);"} font-weight: 600;">
+            ${isDang ? `[FAIL: ${escapeHtml(r.severity)}]` : "[ OK: CLEAN ]"}
           </td>
-          <td style="color: #8b949e;">${escapeHtml(r.created_at)}</td>
+          <td style="color: var(--fg-muted); font-size: 11px;">${escapeHtml(r.created_at)}</td>
         `;
-        tableBody.appendChild(row);
+        tbody.appendChild(row);
       });
     } else {
-      tableBody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #8b949e;">The crypt is empty. No audited commands yet.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" style="color: var(--fg-muted);">No audit records found in database.</td></tr>`;
     }
   } catch (err) {
-    tableBody.innerHTML = `<tr><td colspan="5" style="color: #ff2a5f; text-align: center;">Error loading ledger: ${escapeHtml(err.message)}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="color: var(--ansi-red);">Error reading history: ${escapeHtml(err.message)}</td></tr>`;
   }
 }
 
 /* ==========================================================================
-   10. System Status Telemetry
+   14. System Status Telemetry
    ========================================================================== */
 async function fetchSystemStatus() {
-  const badge = document.getElementById("aiStatusBadge");
-  const textEl = document.getElementById("aiStatusText");
-
+  const pill = document.getElementById("modelPillText");
+  const statusModelTag = document.getElementById("statusModelTag");
   try {
     const resp = await fetch("/api/status");
     if (resp.ok) {
       const data = await resp.json();
-      if (data.status === "online") {
-        textEl.textContent = `Ollama: ${data.default_model}`;
-        badge.querySelector(".status-dot").className = "status-dot pulsing-green";
-      } else {
-        textEl.textContent = "Ollama: Offline (run `ollama serve`)";
-        badge.querySelector(".status-dot").className = "status-dot";
-        badge.querySelector(".status-dot").style.backgroundColor = "#ff2a5f";
-      }
+      if (pill) pill.textContent = `[Ollama: ${data.default_model} (${data.status})]`;
+      if (statusModelTag) statusModelTag.textContent = data.default_model;
     }
   } catch (e) {
-    textEl.textContent = "Backend Connecting...";
+    if (pill) pill.textContent = `[Ollama: offline]`;
   }
 }
 
