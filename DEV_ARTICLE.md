@@ -3,8 +3,8 @@ title: "GhostShell: Bringing an Offline AI Specter to Your Linux Terminal 👻"
 published: false
 description: "A spooky, AI-powered Linux terminal companion built with Python, Ollama, Gemma 2, and Rich for the Hacktoberfest 2026 Ghost in the Machine Challenge."
 tags: hacktoberfest, devchallenge, linux, ai, python
-cover_image: https://raw.githubusercontent.com/your-username/GhostShell/main/assets/ghostshell-banner.png
-canonical_url: https://github.com/your-username/GhostShell
+cover_image: https://raw.githubusercontent.com/GSuryaP/GhostShell/main/assets/ghostshell-banner.png
+canonical_url: https://github.com/GSuryaP/GhostShell
 ---
 
 *This article is a submission for the [Hacktoberfest 2026 DEV Challenge: Ghost in the Machine](https://dev.to).*
@@ -26,7 +26,7 @@ canonical_url: https://github.com/your-username/GhostShell
 
 Linux terminals can be intimidating—and sometimes perilous. A single misplaced space in `rm -rf /` or an accidental block overwrite via `dd` can turn an afternoon of development into a digital horror story.
 
-For the **Ghost in the Machine** challenge, we built **[GhostShell](https://github.com/your-username/GhostShell)**: a spooky, AI-powered Linux terminal companion that haunts your Ubuntu terminal. 
+For the **Ghost in the Machine** challenge, we built **[GhostShell](https://github.com/GSuryaP/GhostShell)**: a spooky, AI-powered Linux terminal companion that haunts your Ubuntu terminal. 
 
 GhostShell acts as a wise, ancient digital specter named **Specter** who has resided in POSIX systems since the UNIX Epoch (Jan 1, 1970). It explains cryptic bash commands, catches demonic (destructive) commands before they execute, and turns raw, cryptic Linux system logs into gothic tales of paranormal activity—all powered by **Gemma 2 (2B)** running **100% offline via Ollama**.
 
@@ -113,7 +113,7 @@ Why run a local open-weight model instead of a cloud API?
 
 ```bash
 # 1. Clone & Set Up
-git clone https://github.com/your-username/GhostShell.git
+git clone https://github.com/GSuryaP/GhostShell.git
 cd GhostShell
 python3 -m venv .venv && source .venv/bin/activate
 pip install -e .

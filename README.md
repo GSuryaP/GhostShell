@@ -99,7 +99,7 @@ graph TD
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/GhostShell.git
+git clone https://github.com/GSuryaP/GhostShell.git
 cd GhostShell
 
 # Create and activate virtual environment
